@@ -1,0 +1,53 @@
+.hatter {
+    opacity: 30%;
+}
+
+.template {
+    opacity: 100% !important;
+}
+
+section#vip {
+    scroll-margin-top: 100px;
+}
+
+/* Nyíl stílusa */
+.scroll-to-vip {
+    // bottom: 30px;
+    z-index: 20;
+    
+    // &:hover {
+    //     // animation: bounce 0.5s infinite;
+    // }
+    
+    svg {
+        filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) translateX(-50%); }
+    50% { transform: translateY(-10px) translateX(-50%); }
+}
+
+.file-upload {
+    &__preview {
+      transition: all 0.3s ease;
+      
+      img {
+        object-fit: contain;
+        background-color: rgba(255,255,255,0.1);
+      }
+    }
+    
+    &__label {
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: rgba(255,255,255,0.05);
+      }
+    }
+  }
+
+  input::placeholder {
+    color: gray; /* vagy pl. #aaa, #888 */
+  }

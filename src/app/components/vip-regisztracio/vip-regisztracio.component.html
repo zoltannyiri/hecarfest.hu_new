@@ -1,0 +1,269 @@
+<div class="min-h-screen bg-gray-900 text-white relative overflow-hidden">
+    <!-- Háttér videó -->
+    <video #videoPlayer autoplay muted loop preload="auto" playsinline
+        class="absolute w-full h-full object-cover hatter z-0">
+        <source src="/hecarfest_logo.mp4" type="video/mp4">
+    </video>
+
+
+    <div class="container mx-auto px-6 py-30 relative z-10">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-8 text-center">
+            <span class="text-yellow-400 font-serif drop-shadow-lg">V.I.P.</span>
+            <span class="text-green-400 font-serif drop-shadow-lg"> Regisztráció</span>
+        </h1>
+        <div class="bg-opacity-60 rounded-2xl shadow-ms p-8 md:p-12 max-w-4xl mx-auto text-white">
+            <div class="text-sm md:text-lg leading-relaxed space-y-4">
+                <span class="block mb-4">
+                    A jól ismert <strong class="text-yellow-300">V.I.P.</strong> szektor idén is elstartol a
+                    <strong class="text-green-300">2025.06.07.</strong>-én megrendezésre kerülő <span
+                        class="text-red-400 font-bold">HéCarFest</span>-en!
+                </span>
+
+                <span class="block mb-4">
+                    Várjuk minden <strong class="text-yellow-200">különleges autóval</strong> rendelkező tulajdonos
+                    jelentkezését,
+                    akik a <strong class="text-green-300">V.I.P. szektorban</strong> szeretnének parkolni.
+                </span>
+
+                <span class="block mb-4">
+                    Amennyiben jelentkezni szeretnél, <strong>töltsd ki a regisztrációs űrlapot</strong>!
+                    A sikeres beválogatásról <strong class="text-blue-300">e-mailben értesítünk.</strong>
+                </span>
+
+                <span class="block mb-4">
+                    <strong class="text-yellow-300">V.I.P ára: 8.000 Ft / autó</strong><br>
+                    Az ár <em class="italic">autónként</em> értendő, <strong>nem főre</strong> – vagyis akár 5 fő is
+                    ülhet az autóban, az ár változatlan.
+                </span>
+
+                <ul class="list-disc list-inside mt-4 space-y-2 text-sm md:text-base text-white">
+                    <li>📍 Helyfoglalás a <strong>V.I.P szektorban</strong></li>
+                    <li>🎁 <strong>Ajándékcsomag</strong> (1 db / autó)</li>
+                    <li>📸 <strong>Külön fotós</strong> a VIP szektorban, garantált profi fotóval</li>
+                    <li>🖼️ A képek megjelennek a <strong>LED-falon</strong> a következő évben</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-to-vip absolute py-0 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+        (click)="scrollToVip()" tabindex="0" role="button">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+
+
+
+    <!-- VIP Regisztráció -->
+    <section #vipSection id="vip" class="relative z-10 flex items-center justify-center py-20 px-4">
+        <div class="w-full max-w-3xl bg-black/70 backdrop-blur-lg text-white rounded-2xl shadow-2xl p-10 space-y-8">
+            <!-- Fejléc szöveg -->
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-yellow-400 mb-2">VIP Regisztráció</h2>
+                <p class="text-lg text-gray-200">
+                    Csatlakozz exkluzív VIP zónánkhoz a HecarFest-en! Külön bejárat, ajándékcsomag és még sok más vár
+                    rád.
+                </p>
+            </div>
+
+
+
+            <!-- Űrlap -->
+            <form #registrationForm class="space-y-6" (submit)="onSubmit($event)" enctype="multipart/form-data">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="lastname" class="block text-sm font-medium">Vezetéknév*</label>
+                        <input type="text" id="lastname" name="lastname" required
+                            class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="firstname" class="block text-sm font-medium">Keresztnév*</label>
+                        <input type="text" id="firstname" name="firstname" required
+                            class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium">Email cím*</label>
+                        <input type="email" id="email" name="email" required
+                            class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="phone" class="block text-sm font-medium">Telefonszám*</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+36 20 123 4567"
+                            class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="licenseplate" class="block text-sm font-medium">Rendszám*</label>
+                        <input type="text" id="licenseplate" name="licenseplate" required placeholder="ABC-123"
+                            class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg uppercase focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="cartype" class="block text-sm font-medium">Autó típusa*</label>
+                        <input type="text" id="cartype" name="cartype" required placeholder="Pl.: BMW M3 E46"
+                            class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+
+
+
+                    <!-- 1. kép -->
+                    <div class="mt-4">
+                        <label for="carImage1" class="block text-sm font-medium"></label>
+                        <div class="mt-1 flex items-center">
+                            <label for="carImage1" class="cursor-pointer">
+                                <span
+                                    class="inline-flex items-center px-4 py-2 border border-gray-600 bg-gray-800 rounded-lg text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Kép az autóról [1/4]
+                                </span>
+                                <input id="carImage1" name="carImage1" type="file" accept="image/*" class="hidden"
+                                    (change)="updateFileName($event, 'autokep1')">
+                            </label>
+                            <span id="autokep1" class="ml-2 text-sm text-gray-300">Nincs fájl kiválasztva</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. kép -->
+                    <div class="mt-4">
+                        <label for="carImage2" class="block text-sm font-medium"></label>
+                        <div class="mt-1 flex items-center">
+                            <label for="carImage2" class="cursor-pointer">
+                                <span
+                                    class="inline-flex items-center px-4 py-2 border border-gray-600 bg-gray-800 rounded-lg text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Kép az autóról [2/4]
+                                </span>
+                                <input id="carImage2" name="carImage2" type="file" accept="image/*" class="hidden"
+                                    (change)="updateFileName($event, 'autokep2')">
+                            </label>
+                            <span id="autokep2" class="ml-2 text-sm text-gray-300">Nincs fájl kiválasztva</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. kép -->
+                    <div class="mt-4">
+                        <label for="carImage3" class="block text-sm font-medium"></label>
+                        <div class="mt-1 flex items-center">
+                            <label for="carImage3" class="cursor-pointer">
+                                <span
+                                    class="inline-flex items-center px-4 py-2 border border-gray-600 bg-gray-800 rounded-lg text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Kép az autóról [3/4]
+                                </span>
+                                <input id="carImage3" name="carImage3" type="file" accept="image/*" class="hidden"
+                                    (change)="updateFileName($event, 'autokep3')">
+                            </label>
+                            <span id="autokep3" class="ml-2 text-sm text-gray-300">Nincs fájl kiválasztva</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. kép -->
+                    <div class="mt-4">
+                        <label for="carImage4" class="block text-sm font-medium"></label>
+                        <div class="mt-1 flex items-center">
+                            <label for="carImage4" class="cursor-pointer">
+                                <span
+                                    class="inline-flex items-center px-4 py-2 border border-gray-600 bg-gray-800 rounded-lg text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Kép az autóról [4/4]
+                                </span>
+                                <input id="carImage4" name="carImage4" type="file" accept="image/*" class="hidden"
+                                    (change)="updateFileName($event, 'autokep4')">
+                            </label>
+                            <span id="autokep4" class="ml-2 text-sm text-gray-300">Nincs fájl kiválasztva</span>
+                        </div>
+                    </div>
+
+                    <!-- Belső kép -->
+                    <div class="mt-4">
+                        <label for="interiorImage" class="block text-sm font-medium"></label>
+                        <div class="mt-1 flex items-center">
+                            <label for="interiorImage" class="cursor-pointer">
+                                <span
+                                    class="inline-flex items-center px-4 py-2 border border-gray-600 bg-gray-800 rounded-lg text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Belső kép az autóról
+                                </span>
+                                <input id="interiorImage" name="interiorImage" type="file" accept="image/*"
+                                    class="hidden" (change)="updateFileName($event, 'autobelso')">
+                            </label>
+                            <span id="autobelso" class="ml-2 text-sm text-gray-300">Nincs fájl kiválasztva</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- Megjegyzés -->
+                <div>
+                    <label for="notes" class="block text-sm font-medium">Ismertesd meg velünk az autód
+                        történetét!*</label>
+                    <textarea required id="notes" name="notes" rows="4"
+                        class="w-full px-4 py-3 border border-gray-600 bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"></textarea>
+                </div>
+
+                <!-- Adatkezelési nyilatkozat -->
+                <div class="flex items-start">
+                    <input id="privacy" name="privacy" type="checkbox" required
+                        class="form-checkbox text-red-600 focus:ring-red-500">
+                    <!-- <label for="privacy" class="ml-3 text-sm">Elfogadom az <a href="#" class="text-red-500 underline">Adatkezelési Tájékoztatót</a> és hozzájárulok adataim kezeléséhez.*</label> -->
+                    <label for="privacy" class="ml-3 text-sm"> A regisztráció kizárólag arra az a személyre és
+                        gépjárműre vonatkozik amely a regiszráláskor beküldésre került! Az azt követő beválogatás során
+                        a V.I.P PASS nem ruházható át más emberre és másik autóra! A kipipálással a felhasználó
+                        elfogadja a feltételeket! </label>
+                </div>
+
+                <!-- Küldés -->
+                <button type="submit" [disabled]="isLoading" [class.bg-red-600]="isLoading"
+                    [class.bg-green-600]="!isLoading" [class.hover-bg-red-700]="isLoading"
+                    [class.hover-bg-green-700]="!isLoading"
+                    class="w-full text-white font-bold py-3 px-4 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex items-center justify-center min-h-[50px]">
+
+                    <ng-container *ngIf="!isLoading; else loadingTemplate">
+                        REGISZTRÁCIÓ ELKÜLDÉSE
+                    </ng-container>
+
+                    <ng-template #loadingTemplate>
+                        <div class="flex items-center gap-2">
+                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Kérjük, várjon...
+                        </div>
+                    </ng-template>
+                </button>
+            </form>
+        </div>
+    </section>
+</div>

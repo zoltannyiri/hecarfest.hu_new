@@ -1,0 +1,48 @@
+<div class="min-h-screen bg-gray-900 text-white">
+  <div class="background">
+    
+    <!-- <video autoplay muted loop class="absolute w-full h-full object-cover">
+      <source src="public/hecarfest_video.mp4" type="video/mp4">
+    </video> -->
+    <!-- Hero rész -->
+    <header class="relative h-screen flex justify-center bg-gray-800 overflow-hidden">
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+      <video #videoPlayer autoplay muted loop preload="auto" playsinline class="absolute w-full h-full object-cover pointer-events-none">
+        <source src="/hecarfest_video1.mp4" type="video/mp4">
+      </video>
+      
+      <div class="top-30 container mx-auto px-6 relative z-10 text-center">
+        <h1 class="text-5xl md:text-7xl font-bold mb-6">
+          <span class="text-yellow-500 font-serif">HéCarFest</span> 
+          <span class="text-green-500 font-serif"> Aero</span>
+          <span class="text-white font-serif"> 2025</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Tesztszöveg</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <button class="bg-yellow-500 hover:bg-green-600 text-black font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105" [routerLink]="['/vip-regisztracio']">
+            <div class="">V.I.P. regisztráció</div>
+            
+          </button>
+          <button class="bg-transparent hover:bg-white hover:bg-opacity-10 border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105">
+            PROGRAMOK
+          </button>
+        </div>
+      </div>
+      
+      <div class="absolute bottom-10 left-0 right-0 text-center">
+        <a href="#tartalom" class="animate-bounce inline-block">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+  
+    <!-- Fő tartalom -->
+    <main id="tartalom" class="py-20">
+      
+  
+    </main>
+  </div>
+    
+</div>
