@@ -137,7 +137,11 @@ async function uploadToDrive(file: Express.Multer.File): Promise<string> {
             },
         });
 
-        return `https://drive.google.com/uc?export=view&id=${response.data.id}`;
+        // Változtasd meg a visszaadott URL-t erre:
+        return `https://lh3.googleusercontent.com/d/${response.data.id}=s400?authuser=0`;
+        
+        // Vagy alternatívaként:
+        // return `https://drive.google.com/thumbnail?id=${response.data.id}&sz=w1000`;
     } catch (error) {
         console.error('HIBA a Drive feltöltésnél:', error);
         throw new Error(`Drive feltöltés sikertelen: ${(error as Error).message}`);
