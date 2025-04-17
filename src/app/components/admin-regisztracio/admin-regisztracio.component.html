@@ -1,0 +1,154 @@
+<div class="min-h-screen bg-gray-900 text-white relative overflow-hidden">
+    <!-- Háttér videó -->
+    <video #videoPlayer autoplay muted loop preload="auto" playsinline
+        class="absolute w-full h-full object-cover hatter z-0">
+        <source src="/hecarfest_logo.mp4" type="video/mp4">
+    </video>
+    
+    <div class="container mx-auto px-6 py-20 relative z-10">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-8 text-center">
+            <span class="text-yellow-400 font-serif drop-shadow-lg">VIP</span>
+            <span class="text-green-400 font-serif drop-shadow-lg"> Regisztrációk</span>
+        </h1>
+        
+        <div class="bg-black bg-opacity-70 rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-yellow-400">Összes regisztráció</h2>
+                <div class="flex space-x-4">
+                    <button (click)="refreshRegistrations()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Frissítés
+                    </button>
+                    <button (click)="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        Kilépés
+                    </button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-700 text-yellow-400">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Név</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Autó</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Rendszám</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Dátum</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr *ngFor="let reg of registrations" class="hover:bg-gray-700 transition">
+                            <td class="px-6 py-4 whitespace-nowrap">{{reg.lastName}} {{reg.firstName}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{reg.email}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{reg.carType}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{reg.licensePlate}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{reg.registrationDate | date:'yyyy.MM.dd HH:mm'}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button (click)="viewDetails(reg)" class="text-blue-400 hover:text-blue-300 mr-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542 7z"></path>
+                                    </svg>
+                                </button>
+                                <button (click)="deleteRegistration(reg._id)" class="text-red-400 hover:text-red-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div *ngIf="registrations.length === 0" class="text-center py-8 text-gray-400">
+                    Nincsenek regisztrációk.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Részletek modal -->
+    <div *ngIf="selectedRegistration" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 rounded-xl shadow-2xl p-8 max-w-4xl w-full relative max-h-[90vh] overflow-y-auto">
+            <button (click)="selectedRegistration = null" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <h2 class="text-2xl font-bold text-yellow-400 mb-6">
+                {{selectedRegistration.lastName}} {{selectedRegistration.firstName}} - {{selectedRegistration.carType}}
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-green-400 mb-3">Alapadatok</h3>
+                    <div class="space-y-2">
+                        <p><span class="text-gray-400">Név:</span> {{selectedRegistration.lastName}} {{selectedRegistration.firstName}}</p>
+                        <p><span class="text-gray-400">Email:</span> {{selectedRegistration.email}}</p>
+                        <p><span class="text-gray-400">Telefon:</span> {{selectedRegistration.phone}}</p>
+                        <p><span class="text-gray-400">Rendszám:</span> {{selectedRegistration.licensePlate}}</p>
+                        <p><span class="text-gray-400">Autó típusa:</span> {{selectedRegistration.carType}}</p>
+                        <p><span class="text-gray-400">Regisztráció ideje:</span> {{selectedRegistration.registrationDate | date:'yyyy.MM.dd HH:mm'}}</p>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-green-400 mt-6 mb-3">Autó története</h3>
+                    <p class="whitespace-pre-line bg-gray-700 p-4 rounded-lg">{{selectedRegistration.carStory}}</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-green-400 mb-3">Képek</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div *ngFor="let img of selectedRegistration.carImages; let i = index" class="relative group">
+                            <div class="relative w-full h-32 bg-gray-700 rounded-lg overflow-hidden">
+                                <img [src]="img" 
+                                     [alt]="'Autó képe ' + (i + 1)"
+                                     class="w-full h-full object-cover transition-opacity duration-300"
+                                     (error)="handleImageError($event, img)"
+                                     (load)="handleImageLoad($event)">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button class="text-white hover:text-gray-300 transition"
+                                            (click)="openImageInNewTab(img)">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                        </svg>
+                                        <span class="sr-only">Kép megnyitása új ablakban</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div *ngIf="selectedRegistration.interiorImage" class="mb-6">
+                        <h4 class="text-md font-medium text-gray-300 mb-2">Belső kép</h4>
+                        <div class="relative w-full h-32 bg-gray-700 rounded-lg overflow-hidden">
+                            <img [src]="selectedRegistration.interiorImage"
+                                 alt="Autó belső képe"
+                                 class="w-full h-full object-cover transition-opacity duration-300"
+                                 (error)="handleImageError($event, selectedRegistration.interiorImage)"
+                                 (load)="handleImageLoad($event)">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button class="text-white hover:text-gray-300 transition"
+                                        (click)="openImageInNewTab(selectedRegistration.interiorImage)">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                    </svg>
+                                    <span class="sr-only">Belső kép megnyitása új ablakban</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

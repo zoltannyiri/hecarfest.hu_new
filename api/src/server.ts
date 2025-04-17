@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { Readable } from "stream";
 import { google as googleApis } from 'googleapis'; // Módosított név
 import nodemailer from 'nodemailer';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 // Környezeti változók betöltése
 dotenv.config({
@@ -270,6 +272,149 @@ oauth2Client.on('tokens', (tokens: { refresh_token?: string | null; access_token
     }
     console.log('Access token:', tokens.access_token);
 });
+
+// Admin felhasználó séma
+const adminSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+  });
+
+
+const Admin = mongoose.model('Admin', adminSchema);
+
+  // JWT titkos kulcs
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+
+// Admin bejelentkezési végpont
+app.post('/api/admin/login', async (req: Request, res: Response) => {
+    try {
+      const { username, password } = req.body;
+      
+      if (!username || !password) {
+        return res.status(400).json({ success: false, message: 'Felhasználónév és jelszó megadása kötelező' });
+      }
+      
+      // Ellenőrizzük a felhasználót (ez csak példa, élesben használj valódi adatbázist)
+      const admin = await Admin.findOne({ username });
+      
+      if (!admin || !(await bcrypt.compare(password, admin.password))) {
+        return res.status(401).json({ success: false, message: 'Hibás felhasználónév vagy jelszó' });
+      }
+      
+      // JWT token generálása
+      const token = jwt.sign({ username: admin.username }, JWT_SECRET, { expiresIn: '8h' });
+      
+      res.json({ success: true, token });
+    } catch (error) {
+      console.error('Bejelentkezési hiba:', error);
+      res.status(500).json({ success: false, message: 'Szerverhiba történt' });
+    }
+  });
+
+
+  app.use(cors({
+    origin: 'http://localhost:4200', // vagy az Angular alkalmazásod URL-je
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+
+//   // Middleware az admin jogosultság ellenőrzésére
+// function verifyAdminToken(req: Request, res: Response, next: NextFunction) {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+//         return res.status(401).json({ success: false, message: 'Hiányzó vagy érvénytelen token' });
+//     }
+
+//     const token = authHeader.split(' ')[1];
+
+//     try {
+//         const decoded = jwt.verify(token, JWT_SECRET) as { username: string };
+//         (req as any).admin = decoded;
+//         next();
+//     } catch (err) {
+//         return res.status(403).json({ success: false, message: 'Érvénytelen vagy lejárt token' });
+//     }
+// }
+
+// // VIP regisztrációk lekérdezése admin számára
+// app.get('/api/admin/registrations', verifyAdminToken, async (req: Request, res: Response) => {
+//     try {
+//         const registrations = await VIPRegistration.find().sort({ registrationDate: -1 });
+//         res.json({ success: true, registrations });
+//     } catch (err) {
+//         console.error('Hiba a regisztrációk lekérésekor:', err);
+//         res.status(500).json({ success: false, message: 'Nem sikerült lekérni a regisztrációkat' });
+//     }
+// });
+
+// Middleware a JWT token ellenőrzéséhez
+function authenticateToken(req: Request, res: Response, next: NextFunction) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) return res.sendStatus(401);
+    
+    jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
+      if (err) return res.sendStatus(403);
+      (req as any).user = user;
+      next();
+    });
+  }
+
+  function requireAdmin(req: { session: { user: { isAdmin: any; }; }; }, res: { redirect: (arg0: string) => void; }, next: () => void) {
+    if (req.session && req.session.user && req.session.user.isAdmin) {
+      next();
+    } else {
+      res.redirect('/admin/registration');
+    }
+  }
+
+
+  // Regisztrációk lekérdezése
+app.get('/api/admin/registrations', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const registrations = await VIPRegistration.find().sort({ registrationDate: -1 });
+      res.json(registrations);
+    } catch (error) {
+      console.error('Regisztrációk lekérdezése sikertelen:', error);
+      res.status(500).json({ message: 'Hiba történt a regisztrációk lekérdezése során' });
+    }
+  });
+  
+  // Regisztráció törlése
+  app.delete('/api/admin/registrations/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      await VIPRegistration.findByIdAndDelete(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Regisztráció törlése sikertelen:', error);
+      res.status(500).json({ message: 'Hiba történt a regisztráció törlése során' });
+    }
+  });
+
+
+  // Kezdeti admin felhasználó létrehozása (csak fejlesztéshez)
+async function createInitialAdmin() {
+    try {
+      const adminCount = await Admin.countDocuments();
+      if (adminCount === 0) {
+        const hashedPassword = await bcrypt.hash('hecarfest2k25', 10);
+        await Admin.create({
+          username: 'hecarfest',
+          password: hashedPassword
+        });
+        console.log('Alapértelmezett admin felhasználó létrehozva');
+      }
+    } catch (error) {
+      console.error('Hiba az admin felhasználó létrehozásakor:', error);
+    }
+  }
+  
+  // Szerver indításakor admin létrehozása
+  createInitialAdmin();
+
 
 // Szerver indítása
 app.listen(PORT, () => {
