@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-admin-regisztracio',
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './admin-regisztracio.component.html',
   styleUrl: './admin-regisztracio.component.scss'
 })
@@ -104,6 +106,76 @@ handleImageLoad(event: Event): void {
   const imgElement = event.target as HTMLImageElement;
   imgElement.style.opacity = '1';
 }
+
+
+
+
+//kategorizálás
+// Új metódusok hozzáadása
+updateStatus(registrationId: string, status: string): void {
+  this.http.put(`http://localhost:3000/api/admin/registrations/${registrationId}/status`, { status }, {
+      headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+      }
+  }).subscribe({
+      next: () => {
+          this.loadRegistrations();
+      },
+      error: (err) => {
+          console.error('Hiba a státusz módosításakor:', err);
+          if (err.status === 401) {
+              this.logout();
+          }
+      }
+  });
+}
+
+filterByStatus(status: string): void {
+  this.isLoading = true;
+  this.http.get<any[]>(`http://localhost:3000/api/admin/registrations/status/${status}`, {
+      headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+      }
+  }).subscribe({
+      next: (data: any[]) => {
+          this.registrations = data;
+          this.isLoading = false;
+      },
+      error: (err: { status: number; }) => {
+          console.error('Hiba a szűréskor:', err);
+          if (err.status === 401) {
+              this.logout();
+          }
+          this.isLoading = false;
+      }
+  });
+}
+
+
+
+//excelbe mentés
+exportToExcel(status: string) {
+    // Szűrjük a megfelelő státuszú regisztrációkat
+    const filteredRegistrations = this.registrations.filter(reg => reg.status === status);
+    
+    // Adatok előkészítése Excel formátumhoz
+    const dataToExport = filteredRegistrations.map(reg => ({
+      Név: `${reg.lastName} ${reg.firstName}`,
+      Email: reg.email,
+      Autó: reg.carType,
+      Rendszám: reg.licensePlate,
+      Dátum: reg.registrationDate,
+      Státusz: reg.status
+    }));
+
+    // Excel fájl létrehozása
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Regisztrációk');
+
+    // Fájl mentése
+    XLSX.writeFile(wb, `regisztraciok_${status}.xlsx`);
+  }
 
 
 

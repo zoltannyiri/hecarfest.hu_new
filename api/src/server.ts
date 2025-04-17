@@ -160,7 +160,12 @@ const vipRegistrationSchema = new mongoose.Schema({
     interiorImage: { type: String },
     carStory: { type: String, required: true },
     privacyAccepted: { type: Boolean, required: true },
-    registrationDate: { type: Date, default: Date.now }
+    registrationDate: { type: Date, default: Date.now },
+    status: { 
+        type: String, 
+        enum: ['pending', 'accepted', 'rejected', 'maybe'], 
+        default: 'pending' 
+    }
 });
 
 const VIPRegistration = mongoose.model('VIPRegistration', vipRegistrationSchema);
@@ -397,6 +402,51 @@ app.get('/api/admin/registrations', authenticateToken, async (req: Request, res:
       res.status(500).json({ message: 'Hiba történt a regisztráció törlése során' });
     }
   });
+
+
+  // Státusz módosítása
+app.put('/api/admin/registrations/:id/status', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        
+        if (!['accepted', 'rejected', 'maybe'].includes(status)) {
+            return res.status(400).json({ message: 'Érvénytelen státusz' });
+        }
+
+        const updatedReg = await VIPRegistration.findByIdAndUpdate(
+            id, 
+            { status },
+            { new: true }
+        );
+
+        if (!updatedReg) {
+            return res.status(404).json({ message: 'Regisztráció nem található' });
+        }
+
+        res.json(updatedReg);
+    } catch (error) {
+        console.error('Státusz módosítási hiba:', error);
+        res.status(500).json({ message: 'Hiba történt a státusz módosítása során' });
+    }
+});
+
+// Regisztrációk lekérdezése státusz szerint
+app.get('/api/admin/registrations/status/:status', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        const { status } = req.params;
+        
+        if (!['pending', 'accepted', 'rejected', 'maybe'].includes(status)) {
+            return res.status(400).json({ message: 'Érvénytelen státusz' });
+        }
+
+        const registrations = await VIPRegistration.find({ status }).sort({ registrationDate: -1 });
+        res.json(registrations);
+    } catch (error) {
+        console.error('Regisztrációk lekérdezése sikertelen:', error);
+        res.status(500).json({ message: 'Hiba történt a regisztrációk lekérdezése során' });
+    }
+});
 
 
   // Kezdeti admin felhasználó létrehozása (csak fejlesztéshez)
