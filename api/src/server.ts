@@ -23,6 +23,59 @@ const PORT: number = 3000;
 app.use(express.json());
 app.use(cors());
 
+
+//ADMIN LOGOLÁS
+// Audit log séma
+const auditLogSchema = new mongoose.Schema({
+    action: { type: String, required: true }, // pl. 'login', 'status_change', 'email_sent'
+    adminUser: { type: String, required: true },
+    targetId: { type: mongoose.Schema.Types.ObjectId }, // érintett regisztráció ID
+    targetType: { type: String }, // pl. 'registration'
+    changes: { type: Object }, // változtatások részletei
+    ipAddress: { type: String },
+    userAgent: { type: String },
+    timestamp: { type: Date, default: Date.now }
+});
+
+const AuditLog = mongoose.model('AuditLog', auditLogSchema);
+
+
+async function logAction(req: Request, action: string, details: any = {}) {
+    try {
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        const userAgent = req.headers['user-agent'];
+        
+        await new AuditLog({
+            action,
+            adminUser: (req as any).user?.username || 'unknown',
+            targetId: details.targetId,
+            targetType: details.targetType,
+            changes: details.changes,
+            ipAddress: ip,
+            userAgent: userAgent
+        }).save();
+    } catch (error) {
+        console.error('Hiba a naplózás során:', error);
+    }
+}
+
+// app.get('/api/admin/audit-logs', authenticateToken, async (req: Request, res: Response) => {
+//     try {
+//         const { limit = 100, page = 1 } = req.query;
+//         const logs = await AuditLog.find()
+//             .sort({ timestamp: -1 })
+//             .limit(Number(limit))
+//             .skip((Number(page) - 1) * Number(limit));
+            
+//         res.json(logs);
+//     } catch (error) {
+//         console.error('Hiba a naplók lekérdezésekor:', error);
+//         res.status(500).json({ message: 'Hiba történt a naplók lekérdezése során' });
+//     }
+// });
+
+
+
 // OAuth2 konfiguráció
 const oauth2Client = new googleApis.auth.OAuth2(
     process.env.GMAIL_CLIENT_ID,
@@ -75,6 +128,79 @@ async function sendEmail(to: string, subject: string, html: string) {
         throw error;
     }
 }
+
+
+
+// Email küldés admin felületről
+app.post('/api/admin/send-email', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        const { registrationId, to, subject, message, notificationType } = req.body;
+
+        // Küldés a Gmail API-val
+        await sendEmail(to, subject, message);
+
+        // Értesítés rögzítése az adott regisztrációhoz
+        await VIPRegistration.findByIdAndUpdate(
+            registrationId,
+            {
+                $push: {
+                    notifications: {
+                        notificationType,
+                        message: subject // vagy a teljes üzenet, ha szeretnéd
+                    }
+                }
+            }
+        );
+
+        await logAction(req, 'email_sent', {
+            targetId: registrationId,
+            targetType: 'registration',
+            changes: {
+                to,
+                subject
+            }
+        });
+
+        res.json({ success: true });
+    } catch (error) {
+        // Hibakezelés
+    }
+});
+
+
+
+// Értesítési állapot módosítása
+app.put('/api/admin/registrations/:id/notified', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { notified } = req.body;
+
+        await logAction(req, 'notification_toggled', {
+            targetId: id,
+            targetType: 'registration',
+            changes: {
+                notified
+            }
+        });
+        
+        const updatedReg = await VIPRegistration.findByIdAndUpdate(
+            id, 
+            { notified },
+            { new: true }
+        );
+
+        if (!updatedReg) {
+            return res.status(404).json({ message: 'Regisztráció nem található' });
+        }
+
+        res.json(updatedReg);
+    } catch (error) {
+        console.error('Értesítési állapot módosítási hiba:', error);
+        res.status(500).json({ message: 'Hiba történt az értesítési állapot módosítása során' });
+    }
+});
+
+
 
 // Multer konfiguráció
 const upload = multer({
@@ -165,7 +291,14 @@ const vipRegistrationSchema = new mongoose.Schema({
         type: String, 
         enum: ['pending', 'accepted', 'rejected', 'maybe'], 
         default: 'pending' 
-    }
+    },
+    notified: { type: Boolean, default: false },
+    // notifications: [{
+    //     _id: false,
+    //     notificationType: String, // pl. 'confirmation', 'rejection'
+    //     sentAt: { type: Date, default: Date.now },
+    //     message: String
+    // }]
 });
 
 const VIPRegistration = mongoose.model('VIPRegistration', vipRegistrationSchema);
@@ -312,6 +445,10 @@ app.post('/api/admin/login', async (req: Request, res: Response) => {
       
       // JWT token generálása
       const token = jwt.sign({ username: admin.username }, JWT_SECRET, { expiresIn: '8h' });
+
+      await logAction(req, 'login', {
+        adminUser: admin.username
+    });
       
       res.json({ success: true, token });
     } catch (error) {
@@ -414,11 +551,22 @@ app.put('/api/admin/registrations/:id/status', authenticateToken, async (req: Re
             return res.status(400).json({ message: 'Érvénytelen státusz' });
         }
 
+
+        const oldReg = await VIPRegistration.findById(id);
         const updatedReg = await VIPRegistration.findByIdAndUpdate(
             id, 
             { status },
             { new: true }
         );
+
+        await logAction(req, 'status_change', {
+            targetId: id,
+            targetType: 'registration',
+            changes: {
+                from: oldReg?.status,
+                to: status
+            }
+        });
 
         if (!updatedReg) {
             return res.status(404).json({ message: 'Regisztráció nem található' });
@@ -450,24 +598,24 @@ app.get('/api/admin/registrations/status/:status', authenticateToken, async (req
 
 
   // Kezdeti admin felhasználó létrehozása (csak fejlesztéshez)
-async function createInitialAdmin() {
-    try {
-      const adminCount = await Admin.countDocuments();
-      if (adminCount === 0) {
-        const hashedPassword = await bcrypt.hash('hecarfest2k25', 10);
-        await Admin.create({
-          username: 'hecarfest',
-          password: hashedPassword
-        });
-        console.log('Alapértelmezett admin felhasználó létrehozva');
-      }
-    } catch (error) {
-      console.error('Hiba az admin felhasználó létrehozásakor:', error);
-    }
-  }
+// async function createInitialAdmin() {
+//     try {
+//       const adminCount = await Admin.countDocuments();
+//       if (adminCount === 0) {
+//         const hashedPassword = await bcrypt.hash('hecarfest2k25', 10);
+//         await Admin.create({
+//           username: 'hecarfest',
+//           password: hashedPassword
+//         });
+//         console.log('Alapértelmezett admin felhasználó létrehozva');
+//       }
+//     } catch (error) {
+//       console.error('Hiba az admin felhasználó létrehozásakor:', error);
+//     }
+//   }
   
   // Szerver indításakor admin létrehozása
-  createInitialAdmin();
+//   createInitialAdmin();
 
 
 // Szerver indítása
