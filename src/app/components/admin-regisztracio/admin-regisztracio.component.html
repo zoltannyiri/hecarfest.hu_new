@@ -27,8 +27,7 @@
                             class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded">
                             Talán
                         </button>
-                        <button (click)="openEmailModal()"
-                            class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">
+                        <button (click)="openEmailModal()" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">
                             Email
                         </button>
                     </div>
@@ -51,7 +50,16 @@
                         </svg>
                         Kilépés
                     </button>
-                    
+                    <button (click)="exportLogsToTxt()"
+                        class="cursor-pointer bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        Logok exportálása (TXT)
+                    </button>
+
                 </div>
             </div>
             <div class="overflow-x-auto">
@@ -140,7 +148,7 @@
                     Exportálás ({{getStatusTitle(currentStatus)}})
                 </button>
             </div>
-            
+
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-gray-700 rounded-lg overflow-hidden">
                     <thead class="bg-gray-600 text-yellow-400">
@@ -149,7 +157,8 @@
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Autó</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Rendszám</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Dátum</th>
-                            <th *ngIf="currentStatus === 'maybe'" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Státusz</th>
+                            <th *ngIf="currentStatus === 'maybe'"
+                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Státusz</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Műveletek</th>
                         </tr>
                     </thead>
@@ -189,92 +198,93 @@
         </div>
     </div>
 
-   <!-- Email modal -->
-<!-- Email modal -->
-<div *ngIf="emailModalOpen" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-    <div class="bg-gray-800 rounded-xl shadow-2xl p-8 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-        <button (click)="closeEmailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-        <h2 class="text-2xl font-bold text-yellow-400 mb-6">Email küldése</h2>
-        
-        <div class="space-y-4">
-            <div>
-                <label class="block text-gray-300 mb-2">Címzett</label>
-                <input type="text" [(ngModel)]="emailData.to" 
-                    class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
-            </div>
-            <div>
-                <label class="block text-gray-300 mb-2">Tárgy</label>
-                <input type="text" [(ngModel)]="emailData.subject" 
-                    class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2" 
-                    placeholder="HéCarFest 2025 értesítés">
-            </div>
-            <div>
-                <label class="block text-gray-300 mb-2">Üzenet</label>
-                <textarea [(ngModel)]="emailData.message" rows="6"
-                    class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"></textarea>
-            </div>
-            
-            <div class="flex space-x-4 mt-6">
-                <button (click)="showEmailList('accepted')"
-                    class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg">
-                    Igen listája
-                </button>
-                <button (click)="showEmailList('rejected')"
-                    class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg">
-                    Nem listája
-                </button>
-                <!-- <button (click)="showEmailList('maybe')"
+    <!-- Email modal -->
+    <!-- Email modal -->
+    <div *ngIf="emailModalOpen" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 rounded-xl shadow-2xl p-8 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+            <button (click)="closeEmailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+            <h2 class="text-2xl font-bold text-yellow-400 mb-6">Email küldése</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 mb-2">Címzett</label>
+                    <input type="text" [(ngModel)]="emailData.to"
+                        class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-2">Tárgy</label>
+                    <input type="text" [(ngModel)]="emailData.subject"
+                        class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+                        placeholder="HéCarFest 2025 értesítés">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-2">Üzenet</label>
+                    <textarea [(ngModel)]="emailData.message" rows="6"
+                        class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"></textarea>
+                </div>
+
+                <div class="flex space-x-4 mt-6">
+                    <button (click)="showEmailList('accepted')"
+                        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg">
+                        Igen listája
+                    </button>
+                    <button (click)="showEmailList('rejected')"
+                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg">
+                        Nem listája
+                    </button>
+                    <!-- <button (click)="showEmailList('maybe')"
                     class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg">
                     Talán listája
                 </button> -->
-            </div>
-            
-            <div *ngIf="showEmailListStatus" class="mt-4">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-lg font-semibold text-yellow-400">
-                        {{getStatusTitle(showEmailListStatus)}} státuszúak listája
-                    </h3>
-                    <button (click)="copyEmailsToClipboard()" 
-                        class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm">
-                        Email címek másolása
-                    </button>
                 </div>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-gray-700 rounded-lg overflow-hidden">
-                        <thead class="bg-gray-600 text-yellow-400">
-                            <tr>
-                                <th class="px-4 py-2 text-left">Név</th>
-                                <th class="px-4 py-2 text-left">Email</th>
-                                <th class="px-4 py-2 text-left">Autó</th>
-                                <th class="px-4 py-2 text-left">Rendszám</th>
-                                <th class="px-4 py-2 text-left">Képek</th>
-                                <!-- <th class="px-4 py-2 text-left">Értesítve</th> -->
-                                <th class="px-4 py-2 text-left">Értesítve</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-600">
-                            <tr *ngFor="let reg of getRegistrationsByStatus(showEmailListStatus)" class="hover:bg-gray-600 transition">
-                                <td class="px-4 py-3 whitespace-nowrap">{{reg.lastName}} {{reg.firstName}}</td>
-                                <td class="px-4 py-3 whitespace-nowrap">{{reg.email}}</td>
-                                <td class="px-4 py-3 whitespace-nowrap">{{reg.carType}}</td>
-                                <td class="px-4 py-3 whitespace-nowrap">{{reg.licensePlate}}</td>
-                                <td class="px-4 py-3">
-                                    <div class="flex space-x-1">
-                                        <div *ngFor="let img of reg.carImages" class="relative group">
-                                            <div class="relative w-10 h-10 bg-gray-700 rounded overflow-hidden">
-                                                <img [src]="img" 
-                                                    class="w-full h-full object-cover cursor-pointer"
-                                                    (click)="openImageInNewTab(img)">
+
+                <div *ngIf="showEmailListStatus" class="mt-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-lg font-semibold text-yellow-400">
+                            {{getStatusTitle(showEmailListStatus)}} státuszúak listája
+                        </h3>
+                        <button (click)="copyEmailsToClipboard()"
+                            class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm">
+                            Email címek másolása
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-gray-700 rounded-lg overflow-hidden">
+                            <thead class="bg-gray-600 text-yellow-400">
+                                <tr>
+                                    <th class="px-4 py-2 text-left">Név</th>
+                                    <th class="px-4 py-2 text-left">Email</th>
+                                    <th class="px-4 py-2 text-left">Autó</th>
+                                    <th class="px-4 py-2 text-left">Rendszám</th>
+                                    <th class="px-4 py-2 text-left">Képek</th>
+                                    <!-- <th class="px-4 py-2 text-left">Értesítve</th> -->
+                                    <th class="px-4 py-2 text-left">Értesítve</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-600">
+                                <tr *ngFor="let reg of getRegistrationsByStatus(showEmailListStatus)"
+                                    class="hover:bg-gray-600 transition">
+                                    <td class="px-4 py-3 whitespace-nowrap">{{reg.lastName}} {{reg.firstName}}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{reg.email}}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{reg.carType}}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{reg.licensePlate}}</td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex space-x-1">
+                                            <div *ngFor="let img of reg.carImages" class="relative group">
+                                                <div class="relative w-10 h-10 bg-gray-700 rounded overflow-hidden">
+                                                    <img [src]="img" class="w-full h-full object-cover cursor-pointer"
+                                                        (click)="openImageInNewTab(img)">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <!-- <td class="px-4 py-3 whitespace-nowrap">
+                                    </td>
+                                    <!-- <td class="px-4 py-3 whitespace-nowrap">
                                     <span *ngIf="hasNotification(reg)" class="text-green-500">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -286,7 +296,7 @@
                                         </svg>
                                     </span>
                                 </td> -->
-                                <!-- <td class="px-4 py-3 whitespace-nowrap">
+                                    <!-- <td class="px-4 py-3 whitespace-nowrap">
                                     <button (click)="selectRecipient(reg.email, reg._id)"
                                         class="text-blue-400 hover:text-blue-300 mr-2">
                                         Kiválaszt
@@ -296,36 +306,38 @@
                                         Részletek
                                     </button>
                                 </td> -->
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <button (click)="toggleNotification(reg)" class="p-1 rounded-full" 
-                                        [class.bg-green-500]="reg.notified"
-                                        [class.bg-gray-700]="!reg.notified">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path *ngIf="reg.notified" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                            <path *ngIf="!reg.notified" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <button (click)="toggleNotification(reg)" class="p-1 rounded-full"
+                                            [class.bg-green-500]="reg.notified" [class.bg-gray-700]="!reg.notified">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path *ngIf="reg.notified" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                <path *ngIf="!reg.notified" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="flex justify-end mt-6">
-                <button (click)="sendEmail()"
-                    class="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                    Email küldése
-                </button>
+
+                <div class="flex justify-end mt-6">
+                    <button (click)="sendEmail()"
+                        class="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        Email küldése
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Részletek modal -->
     <div *ngIf="selectedRegistration"
@@ -334,7 +346,8 @@
             <div class="flex justify-between items-start mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-yellow-400">
-                        {{selectedRegistration.lastName}} {{selectedRegistration.firstName}} - {{selectedRegistration.carType}}
+                        {{selectedRegistration.lastName}} {{selectedRegistration.firstName}} -
+                        {{selectedRegistration.carType}}
                     </h2>
                     <p class="text-gray-400">Státusz: {{getStatusTitle(selectedRegistration.status)}}</p>
                 </div>
@@ -356,13 +369,14 @@
                     </button>
                     <button (click)="selectedRegistration = null" class="text-gray-400 hover:text-white ml-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12">
                             </path>
                         </svg>
                     </button>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                     <h3 class="text-lg font-semibold text-green-400 mb-3">Alapadatok</h3>

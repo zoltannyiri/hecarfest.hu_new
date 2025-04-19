@@ -74,6 +74,17 @@ async function logAction(req: Request, action: string, details: any = {}) {
 //     }
 // });
 
+// Audit log végpont a server.ts-ben
+app.get('/api/admin/audit-logs', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        const logs = await AuditLog.find().sort({ timestamp: -1 }).limit(100);
+        res.json(logs);
+    } catch (error) {
+        console.error('Hiba a naplók lekérdezésekor:', error);
+        res.status(500).json({ message: 'Hiba történt a naplók lekérdezése során' });
+    }
+});
+
 
 
 // OAuth2 konfiguráció
@@ -222,6 +233,7 @@ mongoose.connect(process.env.MONGODB_URL as string, {
 } as mongoose.ConnectOptions)
     .then(() => {
         console.log("Csatlakozva a MongoDB-hez!");
+        // setTimeout(() => createInitialAdmin(), 1000); //ezt majd TÖRÖLD HA MEGVANNAK AZ ADMIN FELHASZNÁLÓK, 600. sor
     })
     .catch((err: Error) => {
         console.error("MongoDB kapcsolati hiba:", err);
@@ -616,6 +628,37 @@ app.get('/api/admin/registrations/status/:status', authenticateToken, async (req
   
   // Szerver indításakor admin létrehozása
 //   createInitialAdmin();
+
+// async function createInitialAdmin() {
+//     try {
+//         console.log('Admin létrehozási folyamat indítása...');
+        
+//         if (mongoose.connection.readyState !== 1) {
+//             throw new Error('Nincs aktív MongoDB kapcsolat');
+//         }
+
+//         const username = 'pisti';
+//         const existingAdmin = await Admin.findOne({ username });
+        
+//         if (!existingAdmin) {
+//             console.log('Admin felhasználó létrehozása...');
+//             const hashedPassword = await bcrypt.hash('pisti', 10);
+//             const newAdmin = await Admin.create({
+//                 username: username,
+//                 password: hashedPassword
+//             });
+//             console.log('Admin felhasználó létrehozva:', newAdmin);
+//             return newAdmin;
+//         } else {
+//             console.log('Az admin felhasználó már létezik:', existingAdmin);
+//             return existingAdmin;
+//         }
+//     } catch (error) {
+//         console.error('Hiba az admin létrehozásakor:', error);
+//         throw error;
+//     }
+// }
+
 
 
 // Szerver indítása

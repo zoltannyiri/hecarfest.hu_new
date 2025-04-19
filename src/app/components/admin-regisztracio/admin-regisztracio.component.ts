@@ -22,6 +22,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkAuth();
     this.loadRegistrations();
+    this.loadLogs();
     
     // 5 percenként frissítjük az adatokat
     this.refreshInterval = setInterval(() => {
@@ -37,7 +38,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   checkAuth(): void {
     const token = localStorage.getItem('admin_token');
-    console.log('Token in admin:', token); // Hibakereséshez
+    console.log('Token in admin:', token);
     if (!token) {
       this.router.navigate(['/']);
     }
@@ -94,259 +95,232 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   openImageInNewTab(imageUrl: string): void {
     window.open(imageUrl, '_blank', 'width=800,height=600');
-}
+  }
 
-handleImageError(event: Event, imageUrl: string): void {
-  const imgElement = event.target as HTMLImageElement;
-  imgElement.style.opacity = '0.5';
-  console.error(`Hiba a kép betöltésekor: ${imageUrl}`);
-}
+  handleImageError(event: Event, imageUrl: string): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.style.opacity = '0.5';
+    console.error(`Hiba a kép betöltésekor: ${imageUrl}`);
+  }
 
-handleImageLoad(event: Event): void {
-  const imgElement = event.target as HTMLImageElement;
-  imgElement.style.opacity = '1';
-}
+  handleImageLoad(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.style.opacity = '1';
+  }
 
+  statusModalOpen: boolean = false;
+  currentStatus: string = '';
+  filteredRegistrations: any[] = [];
 
-statusModalOpen: boolean = false;
-currentStatus: string = '';
-filteredRegistrations: any[] = [];
+  openStatusModal(status: string) {
+    this.currentStatus = status;
+    this.filteredRegistrations = this.registrations.filter(reg => reg.status === status);
+    this.statusModalOpen = true;
+  }
 
-// Modal megnyitása státusz szerint
-openStatusModal(status: string) {
-  this.currentStatus = status;
-  this.filteredRegistrations = this.registrations.filter(reg => reg.status === status);
-  this.statusModalOpen = true;
-}
+  closeStatusModal() {
+    this.statusModalOpen = false;
+  }
 
-
-// Modal bezárása
-closeStatusModal() {
-  this.statusModalOpen = false;
-}
-
-
-// Státusz címének lekérdezése
-getStatusTitle(status: string): string {
-  switch(status) {
+  getStatusTitle(status: string): string {
+    switch(status) {
       case 'accepted': return 'Igen';
       case 'rejected': return 'Nem';
       case 'maybe': return 'Talán';
       case 'pending': return 'Függőben';
       default: return '';
-  }
-}
-
-
-
-
-
-// Egyedi regisztráció exportálása Excelbe
-exportSingleToExcel(registration: any) {
-  // Itt implementáld a single export logikáját
-  // Példa:
-  const data = [{
-        'Név': `${registration.lastName} ${registration.firstName}`,
-        'Email': registration.email,
-        'Autó': registration.carType,
-        'Rendszám': registration.licensePlate,
-        'Státusz': this.getStatusTitle(registration.status),
-        'Dátum': new Date(registration.registrationDate).getTime(),
-        'yyyy.MM.dd HH:mm': new Date(registration.registrationDate).toLocaleString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
-        'Telefon': registration.phone,
-        'Autó története': registration.carStory
-    }];
-  
-  // Itt hívd meg az Excel exportáló függvényed, pl.:
-  this.exportAsExcelFile(data, `${registration.lastName}_${registration.firstName}_${registration.carType}`);
-}
-  exportAsExcelFile(data: { Név: string; Email: any; Autó: any; Rendszám: any; Státusz: string; Dátum: number; 'yyyy.MM.dd HH:mm': any; Telefon: any; 'Autó története': any; }[], arg1: string) {
-    throw new Error('Method not implemented.');
-  }
-
-
-
-
-
-
-
-
-  emailModalOpen: boolean = false;
-showEmailListStatus: string = '';
-emailData: any = {
-  to: '',
-  subject: 'HéCarFest 2025 értesítés',
-  message: '',
-  registrationId: null
-};
-
-// Add these methods to your component class
-openEmailModal() {
-  this.emailModalOpen = true;
-}
-
-closeEmailModal() {
-  this.emailModalOpen = false;
-  this.showEmailListStatus = '';
-  this.emailData = {
-    to: '',
-    subject: 'HéCarFest 2025 VIP értesítés',
-    message: ''
-  };
-}
-
-showEmailList(status: string) {
-  this.showEmailListStatus = status;
-  this.emailData.to = this.getEmailsByStatus(status);
-}
-
-getEmailsByStatus(status: string): string {
-  return this.registrations
-    .filter(reg => reg.status === status)
-    .map(reg => reg.email)
-    .join(', ');
-}
-
-
-
-// Új metódus az értesítés ellenőrzéséhez
-hasNotification(reg: any): boolean {
-  return reg.notifications && reg.notifications.length > 0;
-}
-
-
-// Új metódusok
-getRegistrationsByStatus(status: string): any[] {
-  return this.registrations.filter(reg => reg.status === status);
-}
-
-selectRecipient(email: string, registrationId: string) {
-  this.emailData.to = email;
-  this.emailData.registrationId = registrationId;
-  
-  // Automatikusan kitöltjük a tárgyat, ha üres
-  if (!this.emailData.subject || this.emailData.subject === 'HéCarFest 2025 értesítés') {
-    const reg = this.registrations.find(r => r._id === registrationId);
-    if (reg) {
-      this.emailData.subject = `HéCarFest 2025 - ${reg.lastName} ${reg.firstName} (${reg.licensePlate})`;
     }
   }
-}
 
-
-
-
-
-copyEmailsToClipboard() {
-  const emails = this.getRegistrationsByStatus(this.showEmailListStatus)
-    .map(reg => reg.email)
-    .join(', ');
-  
-  navigator.clipboard.writeText(emails)
-    .then(() => alert('Email címek másolva a vágólapra!'))
-    .catch(err => console.error('Hiba a másolás során:', err));
-}
-
-
-// Metódusok
-async toggleNotification(reg: any) {
-  try {
-    // Lokális állapot váltása
-    reg.notified = !reg.notified;
+  exportSingleToExcel(registration: any) {
+    const data = [{
+      'Név': `${registration.lastName} ${registration.firstName}`,
+      'Email': registration.email,
+      'Autó': registration.carType,
+      'Rendszám': registration.licensePlate,
+      'Státusz': this.getStatusTitle(registration.status),
+      'Dátum': new Date(registration.registrationDate).getTime(),
+      'yyyy.MM.dd HH:mm': new Date(registration.registrationDate).toLocaleString('hu-HU', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+      'Telefon': registration.phone,
+      'Autó története': registration.carStory
+    }];
     
-    // Szerver oldali mentés
-    await this.http.put(`http://localhost:3000/api/admin/registrations/${reg._id}/notified`, 
-      { notified: reg.notified },
-      {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Regisztráció');
+    XLSX.writeFile(wb, `${registration.lastName}_${registration.firstName}_${registration.carType}.xlsx`);
+  }
+
+  emailModalOpen: boolean = false;
+  showEmailListStatus: string = '';
+  emailData: any = {
+    to: '',
+    subject: 'HéCarFest 2025 értesítés',
+    message: '',
+    registrationId: null
+  };
+
+  openEmailModal() {
+    this.emailModalOpen = true;
+  }
+
+  closeEmailModal() {
+    this.emailModalOpen = false;
+    this.showEmailListStatus = '';
+    this.emailData = {
+      to: '',
+      subject: 'HéCarFest 2025 VIP értesítés',
+      message: ''
+    };
+  }
+
+  showEmailList(status: string) {
+    this.showEmailListStatus = status;
+    this.emailData.to = this.getEmailsByStatus(status);
+  }
+
+  getEmailsByStatus(status: string): string {
+    return this.registrations
+      .filter(reg => reg.status === status)
+      .map(reg => reg.email)
+      .join(', ');
+  }
+
+  hasNotification(reg: any): boolean {
+    return reg.notifications && reg.notifications.length > 0;
+  }
+
+  getRegistrationsByStatus(status: string): any[] {
+    return this.registrations.filter(reg => reg.status === status);
+  }
+
+  selectRecipient(email: string, registrationId: string) {
+    this.emailData.to = email;
+    this.emailData.registrationId = registrationId;
+    
+    if (!this.emailData.subject || this.emailData.subject === 'HéCarFest 2025 értesítés') {
+      const reg = this.registrations.find(r => r._id === registrationId);
+      if (reg) {
+        this.emailData.subject = `HéCarFest 2025 - ${reg.lastName} ${reg.firstName} (${reg.licensePlate})`;
+      }
+    }
+  }
+
+  copyEmailsToClipboard() {
+    const emails = this.getRegistrationsByStatus(this.showEmailListStatus)
+      .map(reg => reg.email)
+      .join(', ');
+    
+    navigator.clipboard.writeText(emails)
+      .then(() => alert('Email címek másolva a vágólapra!'))
+      .catch(err => console.error('Hiba a másolás során:', err));
+  }
+
+  async toggleNotification(reg: any) {
+    try {
+      reg.notified = !reg.notified;
+      
+      await this.http.put(`http://localhost:3000/api/admin/registrations/${reg._id}/notified`, 
+        { notified: reg.notified },
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+          }
+        }
+      ).toPromise();
+    } catch (error) {
+      console.error('Hiba az értesítési állapot módosításakor:', error);
+      reg.notified = !reg.notified;
+      alert('Hiba történt az állapot mentése során');
+    }
+  }
+
+  async sendEmail() {
+    if (!this.emailData.to || !this.emailData.subject || !this.emailData.message) {
+      alert('Kérjük töltsd ki minden mezőt!');
+      return;
+    }
+
+    try {
+      await this.http.post('http://localhost:3000/api/admin/send-email', this.emailData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
         }
+      }).toPromise();
+
+      alert('Email sikeresen elküldve!');
+      this.closeEmailModal();
+    } catch (error) {
+      console.error('Hiba az email küldésekor:', error);
+      alert('Hiba történt az email küldése során');
+    }
+  }
+
+  logs: any[] = [];
+
+  async loadLogs() {
+    try {
+      const logs = await this.http.get<any[]>('http://localhost:3000/api/admin/audit-logs', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        }
+      }).toPromise();
+      
+      // Ellenőrizzük, hogy van-e adat
+      if (logs && Array.isArray(logs)) {
+        this.logs = logs;
+      } else {
+        console.warn('A naplók lekérdezése üres választ adott vissza');
+        this.logs = [];
       }
-    ).toPromise();
-  } catch (error) {
-    console.error('Hiba az értesítési állapot módosításakor:', error);
-    // Visszaállítás hibánál
-    reg.notified = !reg.notified;
-    alert('Hiba történt az állapot mentése során');
-  }
-}
-
-async sendEmail() {
-  if (!this.emailData.to || !this.emailData.subject || !this.emailData.message) {
-    alert('Kérjük töltsd ki minden mezőt!');
-    return;
+    } catch (error) {
+      console.error('Hiba a naplók betöltésekor:', error);
+      this.logs = [];
+    }
   }
 
-  try {
-    await this.http.post('http://localhost:3000/api/admin/send-email', this.emailData, {
+  updateStatus(registrationId: string, status: string): void {
+    this.http.put(`http://localhost:3000/api/admin/registrations/${registrationId}/status`, { status }, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
       }
-    }).toPromise();
-
-    alert('Email sikeresen elküldve!');
-    this.closeEmailModal();
-  } catch (error) {
-    console.error('Hiba az email küldésekor:', error);
-    alert('Hiba történt az email küldése során');
-  }
-}
-
-
-
-
-
-
-
-//kategorizálás
-// Új metódusok hozzáadása
-updateStatus(registrationId: string, status: string): void {
-  this.http.put(`http://localhost:3000/api/admin/registrations/${registrationId}/status`, { status }, {
-      headers: {
-          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-      }
-  }).subscribe({
+    }).subscribe({
       next: () => {
-          this.loadRegistrations();
+        this.loadRegistrations();
       },
       error: (err) => {
-          console.error('Hiba a státusz módosításakor:', err);
-          if (err.status === 401) {
-              this.logout();
-          }
+        console.error('Hiba a státusz módosításakor:', err);
+        if (err.status === 401) {
+          this.logout();
+        }
       }
-  });
-}
+    });
+  }
 
-filterByStatus(status: string): void {
-  this.isLoading = true;
-  this.http.get<any[]>(`http://localhost:3000/api/admin/registrations/status/${status}`, {
+  filterByStatus(status: string): void {
+    this.isLoading = true;
+    this.http.get<any[]>(`http://localhost:3000/api/admin/registrations/status/${status}`, {
       headers: {
-          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
       }
-  }).subscribe({
+    }).subscribe({
       next: (data: any[]) => {
-          this.registrations = data;
-          this.isLoading = false;
+        this.registrations = data;
+        this.isLoading = false;
       },
       error: (err: { status: number; }) => {
-          console.error('Hiba a szűréskor:', err);
-          if (err.status === 401) {
-              this.logout();
-          }
-          this.isLoading = false;
+        console.error('Hiba a szűréskor:', err);
+        if (err.status === 401) {
+          this.logout();
+        }
+        this.isLoading = false;
       }
-  });
-}
+    });
+  }
 
-
-
-//excelbe mentés
-exportToExcel(status: string) {
-    // Szűrjük a megfelelő státuszú regisztrációkat
+  exportToExcel(status: string) {
     const filteredRegistrations = this.registrations.filter(reg => reg.status === status);
     
-    // Adatok előkészítése Excel formátumhoz
     const dataToExport = filteredRegistrations.map(reg => ({
       Név: `${reg.lastName} ${reg.firstName}`,
       Email: reg.email,
@@ -356,16 +330,65 @@ exportToExcel(status: string) {
       Státusz: reg.status
     }));
 
-    // Excel fájl létrehozása
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Regisztrációk');
-
-    // Fájl mentése
     XLSX.writeFile(wb, `regisztraciok_${status}.xlsx`);
   }
 
+  exportLogsToTxt() {
+    if (this.logs.length === 0) {
+      alert('Nincsenek naplóbejegyzések az exportáláshoz!');
+      return;
+    }
+  
+    // Fejléc
+    let txtContent = "Időpont\t\t\tAdmin\t\tTevékenység\t\tCél\t\tRészletek\n";
+    txtContent += "=".repeat(100) + "\n";
+  
+    // Adatok hozzáadása
+    this.logs.forEach(log => {
+      txtContent += `${new Date(log.timestamp).toLocaleString('hu-HU')}\t`;
+      txtContent += `${log.adminUser}\t`;
+      txtContent += `${log.action}\t`;
+      txtContent += `${log.targetType || 'N/A'}\t`;
+      
+      // Formázott változtatások
+      if (log.changes) {
+        if (typeof log.changes === 'object') {
+          txtContent += JSON.stringify(log.changes, null, 2)
+            .replace(/\n/g, ' ')
+            .replace(/\s+/g, ' ');
+        } else {
+          txtContent += log.changes;
+        }
+      } else {
+        txtContent += 'N/A';
+      }
+      
+      txtContent += "\n";
+    });
+  
+    // Blob létrehozása és letöltés
+    this.downloadFile(txtContent, 'text/plain', 'HecarFest_logs.txt');
+  }
 
+  private downloadFile(data: string, mimeType: string, filename: string) {
+    const blob = new Blob([data], { type: `${mimeType};charset=utf-8` });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    
+    // Takarítás
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
 
   logout(): void {
     localStorage.removeItem('admin_token');
