@@ -106,7 +106,8 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
   handleImageLoad(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
     imgElement.style.opacity = '1';
-  }
+    imgElement.style.objectFit = 'cover'; // Biztosítja, hogy a kép jól illeszkedjen
+}
 
   statusModalOpen: boolean = false;
   currentStatus: string = '';
@@ -176,15 +177,16 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   showEmailList(status: string) {
     this.showEmailListStatus = status;
-    this.emailData.to = this.getEmailsByStatus(status);
-  }
+    // NE töltse be automatikusan az email címeket
+    this.emailData.to = ''; // Üresen hagyjuk a címzett mezőt
+}
 
-  getEmailsByStatus(status: string): string {
-    return this.registrations
-      .filter(reg => reg.status === status)
-      .map(reg => reg.email)
-      .join(', ');
-  }
+  // getEmailsByStatus(status: string): string {
+  //   return this.registrations
+  //     .filter(reg => reg.status === status)
+  //     .map(reg => reg.email)
+  //     .join(', ');
+  // }
 
   hasNotification(reg: any): boolean {
     return reg.notifications && reg.notifications.length > 0;
@@ -195,16 +197,25 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
   }
 
   selectRecipient(email: string, registrationId: string) {
-    this.emailData.to = email;
+    // Email hozzáadása a címzettekhez
+    if (!this.emailData.to) {
+        this.emailData.to = email;
+    } 
+    else if (!this.emailData.to.includes(email)) {
+        this.emailData.to += ', ' + email;
+    }
+    
     this.emailData.registrationId = registrationId;
     
-    if (!this.emailData.subject || this.emailData.subject === 'HéCarFest 2025 értesítés') {
-      const reg = this.registrations.find(r => r._id === registrationId);
-      if (reg) {
-        this.emailData.subject = `HéCarFest 2025 - ${reg.lastName} ${reg.firstName} (${reg.licensePlate})`;
-      }
+    const defaultSubject = 'HéCarFest 2025 értesítés';
+    if (!this.emailData.subject || this.emailData.subject === defaultSubject) {
+        const reg = this.registrations.find(r => r._id === registrationId);
+        if (reg) {
+            // Az eredeti tárgyhoz hozzáfűzzük a rendszámot
+            this.emailData.subject = `${defaultSubject}`;
+        }
     }
-  }
+}
 
   copyEmailsToClipboard() {
     const emails = this.getRegistrationsByStatus(this.showEmailListStatus)

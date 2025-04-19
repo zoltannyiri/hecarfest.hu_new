@@ -27,7 +27,8 @@
                             class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded cursor-pointer">
                             Talán
                         </button>
-                        <button (click)="openEmailModal()" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded cursor-pointer">
+                        <button (click)="openEmailModal()"
+                            class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded cursor-pointer">
                             Email
                         </button>
                     </div>
@@ -263,8 +264,7 @@
                                     <th class="px-4 py-2 text-left">Autó</th>
                                     <th class="px-4 py-2 text-left">Rendszám</th>
                                     <th class="px-4 py-2 text-left">Képek</th>
-                                    <!-- <th class="px-4 py-2 text-left">Értesítve</th> -->
-                                    <th class="px-4 py-2 text-left">Értesítve</th>
+                                    <th class="px-4 py-2 text-left">Műveletek</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-600">
@@ -284,29 +284,11 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <!-- <td class="px-4 py-3 whitespace-nowrap">
-                                    <span *ngIf="hasNotification(reg)" class="text-green-500">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                    </span>
-                                    <span *ngIf="!hasNotification(reg)" class="text-red-500">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </span>
-                                </td> -->
-                                    <!-- <td class="px-4 py-3 whitespace-nowrap">
-                                    <button (click)="selectRecipient(reg.email, reg._id)"
-                                        class="text-blue-400 hover:text-blue-300 mr-2">
-                                        Kiválaszt
-                                    </button>
-                                    <button (click)="viewDetails(reg)"
-                                        class="text-purple-400 hover:text-purple-300">
-                                        Részletek
-                                    </button>
-                                </td> -->
                                     <td class="px-4 py-3 whitespace-nowrap">
+                                        <button (click)="selectRecipient(reg.email, reg._id)"
+                                            class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm mr-2">
+                                            Kiválaszt
+                                        </button>
                                         <button (click)="toggleNotification(reg)" class="p-1 rounded-full"
                                             [class.bg-green-500]="reg.notified" [class.bg-gray-700]="!reg.notified">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -399,11 +381,14 @@
                         <div *ngFor="let img of selectedRegistration.carImages; let i = index" class="relative group">
                             <div class="relative w-full h-32 bg-gray-700 rounded-lg overflow-hidden">
                                 <img [src]="img" [alt]="'Autó képe ' + (i + 1)"
-                                    class="w-full h-full object-cover transition-opacity duration-300" loading="lazy"
-                                    (error)="handleImageError($event, img)" (load)="handleImageLoad($event)"
-                                    [style.background]="'#1a202c'">
-                                <div
-                                    class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    class="w-full h-full object-cover transition-opacity duration-300" 
+                                    loading="lazy"
+                                    (error)="handleImageError($event, img)" 
+                                    (load)="handleImageLoad($event)"
+                                    [style.background]="'#1a202c'"
+                                    [style.width]="'100%'"
+                                    [style.height]="'100%'">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button class="text-white hover:text-gray-300 transition"
                                         (click)="openImageInNewTab(img)">
                                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

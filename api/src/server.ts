@@ -265,6 +265,7 @@ const authDrive = new googleApis.auth.GoogleAuth({
 const drive = googleApis.drive({ version: 'v3', auth: authDrive });
 
 // Segédfüggvény a Google Drive-ba feltöltéshez
+// Módosítsd az uploadToDrive függvényt
 async function uploadToDrive(file: Express.Multer.File): Promise<string> {
     try {
         const fileMetadata = {
@@ -291,16 +292,15 @@ async function uploadToDrive(file: Express.Multer.File): Promise<string> {
             },
         });
 
-        // Változtasd meg a visszaadott URL-t erre:
-        return `https://lh3.googleusercontent.com/d/${response.data.id}=s400?authuser=0`;
+        // Egységes URL formátum, méret paraméterrel, de authuser nélkül
+        return `https://lh3.googleusercontent.com/d/${response.data.id}=s400`;
         
-        // Vagy alternatívaként:
-        // return `https://drive.google.com/thumbnail?id=${response.data.id}&sz=w1000`;
     } catch (error) {
         console.error('HIBA a Drive feltöltésnél:', error);
         throw new Error(`Drive feltöltés sikertelen: ${(error as Error).message}`);
     }
 }
+
 
 // VIP Regisztrációs séma
 const vipRegistrationSchema = new mongoose.Schema({
