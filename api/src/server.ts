@@ -45,12 +45,32 @@ async function logAction(req: Request, action: string, details: any = {}) {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
         const userAgent = req.headers['user-agent'];
         
+        // Ha van targetId, lekérjük a regisztrációt
+        let registrationDetails = {};
+        if (details.targetId) {
+            const reg = await VIPRegistration.findById(details.targetId);
+            if (reg) {
+                registrationDetails = {
+                    regName: `${reg.firstName} ${reg.lastName}`,
+                    regEmail: reg.email,
+                    regLicensePlate: reg.licensePlate,
+                    regCarType: reg.carType
+                };
+            }
+        }
+
+        // Egyesítjük a manuálisan megadott változtatásokat és a regisztrációs adatokat
+        const finalChanges = {
+            ...(details.changes || {}),
+            ...registrationDetails
+        };
+
         await new AuditLog({
             action,
             adminUser: (req as any).user?.username || 'unknown',
             targetId: details.targetId,
             targetType: details.targetType,
-            changes: details.changes,
+            changes: finalChanges,
             ipAddress: ip,
             userAgent: userAgent
         }).save();
@@ -147,24 +167,15 @@ app.post('/api/admin/send-email', authenticateToken, async (req: Request, res: R
     try {
         const { registrationId, to, subject, message, notificationType } = req.body;
 
-        // Küldés a Gmail API-val
         await sendEmail(to, subject, message);
 
-        // Értesítés rögzítése az adott regisztrációhoz
         await VIPRegistration.findByIdAndUpdate(
             registrationId,
-            {
-                $push: {
-                    notifications: {
-                        notificationType,
-                        message: subject // vagy a teljes üzenet, ha szeretnéd
-                    }
-                }
-            }
+            { $push: { notifications: { notificationType, message: subject } }}
         );
 
         await logAction(req, 'email_sent', {
-            targetId: registrationId,
+            targetId: registrationId, // Ez biztosítja, hogy a regisztráció adatai betöltődjenek
             targetType: 'registration',
             changes: {
                 to,
@@ -174,9 +185,14 @@ app.post('/api/admin/send-email', authenticateToken, async (req: Request, res: R
 
         res.json({ success: true });
     } catch (error) {
-        // Hibakezelés
+        console.error('Hiba email küldéskor:', error);
+        res.status(500).json({ success: false, message: 'Hiba történt az email küldése során' });
     }
 });
+
+
+
+
 
 
 
@@ -543,18 +559,31 @@ app.get('/api/admin/registrations', authenticateToken, async (req: Request, res:
   // Regisztráció törlése
   app.delete('/api/admin/registrations/:id', authenticateToken, async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
-      await VIPRegistration.findByIdAndDelete(id);
-      res.json({ success: true });
+        const { id } = req.params;
+        const regToDelete = await VIPRegistration.findById(id);
+        
+        await VIPRegistration.findByIdAndDelete(id);
+        
+        await logAction(req, 'registration_deleted', {
+            targetId: id,
+            targetType: 'registration',
+            changes: {
+                regName: `${regToDelete?.firstName} ${regToDelete?.lastName}`,
+                regEmail: regToDelete?.email,
+                regLicensePlate: regToDelete?.licensePlate
+            }
+        });
+
+        res.json({ success: true });
     } catch (error) {
-      console.error('Regisztráció törlése sikertelen:', error);
-      res.status(500).json({ message: 'Hiba történt a regisztráció törlése során' });
+        console.error('Regisztráció törlése sikertelen:', error);
+        res.status(500).json({ message: 'Hiba történt a regisztráció törlése során' });
     }
-  });
+});
 
 
   // Státusz módosítása
-app.put('/api/admin/registrations/:id/status', authenticateToken, async (req: Request, res: Response) => {
+  app.put('/api/admin/registrations/:id/status', authenticateToken, async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -562,7 +591,6 @@ app.put('/api/admin/registrations/:id/status', authenticateToken, async (req: Re
         if (!['accepted', 'rejected', 'maybe'].includes(status)) {
             return res.status(400).json({ message: 'Érvénytelen státusz' });
         }
-
 
         const oldReg = await VIPRegistration.findById(id);
         const updatedReg = await VIPRegistration.findByIdAndUpdate(
@@ -572,7 +600,7 @@ app.put('/api/admin/registrations/:id/status', authenticateToken, async (req: Re
         );
 
         await logAction(req, 'status_change', {
-            targetId: id,
+            targetId: id, // Ez biztosítja, hogy a regisztráció adatai betöltődjenek
             targetType: 'registration',
             changes: {
                 from: oldReg?.status,

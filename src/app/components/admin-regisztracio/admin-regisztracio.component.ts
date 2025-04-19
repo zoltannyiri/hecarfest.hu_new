@@ -343,35 +343,42 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
     }
   
     // Fejléc
-    let txtContent = "Időpont\t\t\tAdmin\t\tTevékenység\t\tCél\t\tRészletek\n";
-    txtContent += "=".repeat(100) + "\n";
+    let txtContent = "Időpont\t\t\tAdmin\t\tTevékenység\t\tAutó\t\tRendszám\t\tNév\t\tEmail\t\tVáltozás\n";
+    txtContent += "=".repeat(180) + "\n";
   
     // Adatok hozzáadása
     this.logs.forEach(log => {
-      txtContent += `${new Date(log.timestamp).toLocaleString('hu-HU')}\t`;
-      txtContent += `${log.adminUser}\t`;
-      txtContent += `${log.action}\t`;
-      txtContent += `${log.targetType || 'N/A'}\t`;
+      const timestamp = new Date(log.timestamp).toLocaleString('hu-HU');
+      const admin = log.adminUser || 'unknown';
+      const action = log.action;
       
-      // Formázott változtatások
-      if (log.changes) {
-        if (typeof log.changes === 'object') {
-          txtContent += JSON.stringify(log.changes, null, 2)
-            .replace(/\n/g, ' ')
-            .replace(/\s+/g, ' ');
-        } else {
-          txtContent += log.changes;
-        }
-      } else {
-        txtContent += 'N/A';
+      // Regisztrációs adatok kinyerése - most már a changes-ben kell keresni
+      const regName = log.changes?.regName || log.changes?.name || 'N/A';
+      const regLicensePlate = log.changes?.regLicensePlate || log.changes?.licensePlate || 'N/A';
+      const regEmail = log.changes?.regEmail || log.changes?.email || 'N/A';
+      const regCarType = log.changes?.regCarType || log.changes?.carType || 'N/A';
+      
+      // Változás részletei
+      let changeDetails = '';
+      if (log.action === 'status_change') {
+        changeDetails = `Státusz változás: ${log.changes?.from || 'N/A'} → ${log.changes?.to || 'N/A'}`;
+      } else if (log.action === 'email_sent') {
+        changeDetails = `Email küldés: ${log.changes?.to || 'N/A'} - ${log.changes?.subject || 'N/A'}`;
+      } else if (log.action === 'notification_toggled') {
+        changeDetails = `Értesítés állapota: ${log.changes?.notified !== undefined ? (log.changes.notified ? 'bekapcsolva' : 'kikapcsolva') : 'N/A'}`;
+      } else if (log.changes) {
+        changeDetails = JSON.stringify(log.changes, null, 2)
+          .replace(/\n/g, ' ')
+          .replace(/\s+/g, ' ');
       }
       
-      txtContent += "\n";
+      // Az adatok formázása, hogy szépen rendezetten jelenjenek meg
+      txtContent += `${timestamp}\t${admin.padEnd(8)}\t${action.padEnd(15)}\t${regCarType.padEnd(10)}\t${regLicensePlate.padEnd(10)}\t${regName.padEnd(15)}\t${regEmail.padEnd(20)}\t${changeDetails}\n`;
     });
   
     // Blob létrehozása és letöltés
     this.downloadFile(txtContent, 'text/plain', 'HecarFest_logs.txt');
-  }
+}
 
   private downloadFile(data: string, mimeType: string, filename: string) {
     const blob = new Blob([data], { type: `${mimeType};charset=utf-8` });
