@@ -321,12 +321,6 @@ const vipRegistrationSchema = new mongoose.Schema({
         default: 'pending' 
     },
     notified: { type: Boolean, default: false },
-    // notifications: [{
-    //     _id: false,
-    //     notificationType: String, // pl. 'confirmation', 'rejection'
-    //     sentAt: { type: Date, default: Date.now },
-    //     message: String
-    // }]
 });
 
 const VIPRegistration = mongoose.model('VIPRegistration', vipRegistrationSchema);
@@ -493,34 +487,6 @@ app.post('/api/admin/login', async (req: Request, res: Response) => {
     allowedHeaders: ['Content-Type', 'Authorization']
   }));
 
-//   // Middleware az admin jogosultság ellenőrzésére
-// function verifyAdminToken(req: Request, res: Response, next: NextFunction) {
-//     const authHeader = req.headers.authorization;
-//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-//         return res.status(401).json({ success: false, message: 'Hiányzó vagy érvénytelen token' });
-//     }
-
-//     const token = authHeader.split(' ')[1];
-
-//     try {
-//         const decoded = jwt.verify(token, JWT_SECRET) as { username: string };
-//         (req as any).admin = decoded;
-//         next();
-//     } catch (err) {
-//         return res.status(403).json({ success: false, message: 'Érvénytelen vagy lejárt token' });
-//     }
-// }
-
-// // VIP regisztrációk lekérdezése admin számára
-// app.get('/api/admin/registrations', verifyAdminToken, async (req: Request, res: Response) => {
-//     try {
-//         const registrations = await VIPRegistration.find().sort({ registrationDate: -1 });
-//         res.json({ success: true, registrations });
-//     } catch (err) {
-//         console.error('Hiba a regisztrációk lekérésekor:', err);
-//         res.status(500).json({ success: false, message: 'Nem sikerült lekérni a regisztrációkat' });
-//     }
-// });
 
 // Middleware a JWT token ellenőrzéséhez
 function authenticateToken(req: Request, res: Response, next: NextFunction) {
@@ -635,57 +601,6 @@ app.get('/api/admin/registrations/status/:status', authenticateToken, async (req
         res.status(500).json({ message: 'Hiba történt a regisztrációk lekérdezése során' });
     }
 });
-
-
-  // Kezdeti admin felhasználó létrehozása (csak fejlesztéshez)
-// async function createInitialAdmin() {
-//     try {
-//       const adminCount = await Admin.countDocuments();
-//       if (adminCount === 0) {
-//         const hashedPassword = await bcrypt.hash('hecarfest2k25', 10);
-//         await Admin.create({
-//           username: 'hecarfest',
-//           password: hashedPassword
-//         });
-//         console.log('Alapértelmezett admin felhasználó létrehozva');
-//       }
-//     } catch (error) {
-//       console.error('Hiba az admin felhasználó létrehozásakor:', error);
-//     }
-//   }
-  
-  // Szerver indításakor admin létrehozása
-//   createInitialAdmin();
-
-// async function createInitialAdmin() {
-//     try {
-//         console.log('Admin létrehozási folyamat indítása...');
-        
-//         if (mongoose.connection.readyState !== 1) {
-//             throw new Error('Nincs aktív MongoDB kapcsolat');
-//         }
-
-//         const username = 'pisti';
-//         const existingAdmin = await Admin.findOne({ username });
-        
-//         if (!existingAdmin) {
-//             console.log('Admin felhasználó létrehozása...');
-//             const hashedPassword = await bcrypt.hash('pisti', 10);
-//             const newAdmin = await Admin.create({
-//                 username: username,
-//                 password: hashedPassword
-//             });
-//             console.log('Admin felhasználó létrehozva:', newAdmin);
-//             return newAdmin;
-//         } else {
-//             console.log('Az admin felhasználó már létezik:', existingAdmin);
-//             return existingAdmin;
-//         }
-//     } catch (error) {
-//         console.error('Hiba az admin létrehozásakor:', error);
-//         throw error;
-//     }
-// }
 
 
 

@@ -1,1 +1,216 @@
-<p>gyik works!</p>
+<div class="relative min-h-screen bg-gray-900 text-white">
+    <!-- Fix háttér videó -->
+    <div class="fixed inset-0 w-full h-full">
+      <video #videoPlayer autoplay muted loop preload="auto" playsinline
+        class="absolute w-full h-full object-cover">
+        <source src="/hecarfest_video1.mp4" type="video/mp4" />
+      </video>
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+    </div>
+  
+    <!-- Görgető tartalom -->
+    <div class="relative z-10">
+      <!-- <header class="relative h-[30vh] flex justify-center bg-gray-800 bg-opacity-90 overflow-hidden"> -->
+        <div class="container mx-auto px-6 relative z-10 text-center py-30">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6">
+            <span class="text-yellow-500 font-serif">GYIK</span>
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+            Gyakran ismételt kérdések az eseménnyel kapcsolatban
+          </p>
+        </div>
+      <!-- </header> -->
+  
+      <main id="tartalom" class="relative py-20 px-4 max-w-4xl mx-auto bg-gray-900/90 rounded-lg">
+        <div class="space-y-4">
+          <!-- Kérdés 1 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer1')">
+              <span class="font-semibold text-xl">Az autóban amivel érkezünk többen ülünk. Mindenkinek be kell fizetnie a belépőt? </span>
+              <svg [class]="isOpen.answer1 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer1 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer1" class="py-4 text-gray-200">
+                Nem. A jegyárakat az autókra szabtuk, így abban az esetben is 4000Ft/autó, ha az aztóban 5 ember ül. A belépés gyalogosan ingyenes.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 2 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer2')">
+              <span class="font-semibold text-xl">Regisztráltam a V.I.P szektorba de, még nem kaptam visszajelzést. Mit tegyek? </span>
+              <svg [class]="isOpen.answer2 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer2 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer2" class="py-4 text-gray-200">
+                A regisztrációkat a szervezőicsapat egyesével bírálja el, hogy kik azok akik bekerülnek és kik azok akik nem. Ez a folyamat hosszadalmas, így sokszor előfordul, hogy a válasz csak hetekkel később érkezik meg.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 3 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer3')">
+              <span class="font-semibold text-xl">Mit kell tennem, hogy részt tudjak venni a versenyeken?</span>
+              <svg [class]="isOpen.answer3 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer3 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer3" class="py-4 text-gray-200">
+                A rendezvény ideje alatt több versenyprogram is esedékes. A regisztráció minden esetben a színpad melletti staff sátornál (Regisztráció) felirattal ellátott helyen történik. Ezalól kivételt képez a jól megszokott közönségszavazós szépségverseny. A belépéskor megszerzett sorszámmal megjelölt szavazólap átvételével és azt az autóra jól látható helyre való kihelyezéssel, automatikus részvételt eredményez.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 4 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer4')">
+              <span class="font-semibold text-xl">Megsérült, elázott, elhagytam a szavazólapom. Mit tegyek? </span>
+              <svg [class]="isOpen.answer4 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer4 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer4" class="py-4 text-gray-200">
+                A szavazólap sérülése vagy ázása esetén lehetőséged van újat kérni a staff sátornál, vagy a kapunál. FONTOS: Érdemes megjegyezni milyen szám szerepelt a korábbi szavazólapon és azt az új kérésekor ráíratni!
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 5 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer5')">
+              <span class="font-semibold text-xl">Hogyan tudok online szavazni?</span>
+              <svg [class]="isOpen.answer5 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer5 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer5" class="py-4 text-gray-200">
+                Az online szavazás (közönségszavazat) a szokásos módon zajlik. Minden résztvevő aki autóval érkezik kap egy sorszámmal ellátott szavazólapot. A lapon elhelyezett QR kódot scaneld be a telefonod segítségével és máris a szavazófelületen találod magad! Nincs más dolgod mint a megfelelő autónak a megfelelő sorszámát beírni és beküldeni a szavazatod.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 6 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer6')">
+              <span class="font-semibold text-xl"> Többször is szavazhatok?</span>
+              <svg [class]="isOpen.answer6 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer6 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer6" class="py-4 text-gray-200">
+                Az online szavazáskor mindenki csak egyszer szavazhat 3 kategóriában. Többszöri próbálkozás esetén a szavazó nem fogja tudni beküldeni a szavazatait mert a rendszer mindenkit ellenőriz.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 7 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer7')">
+              <span class="font-semibold text-xl">Hol tudok tombolát venni?</span>
+              <svg [class]="isOpen.answer7 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer7 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer7" class="py-4 text-gray-200">
+                A rendezvényen 2 tombolaárus lesz. Mindketten STAFF pólót fognak hordani és tombola lesz náluk. :) Az egyik tombolás lány a tömegben lesz megtalálható, míg a másik a regisztrációs pultnál lesz elérhető!
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 8 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer8')">
+              <span class="font-semibold text-xl">Kihajthatok a rendezvényről és vissza ugyanazzal a jeggyel?</span>
+              <svg [class]="isOpen.answer8 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer8 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer8" class="py-4 text-gray-200">
+                Természetesen a rendezvény területéről a ki és behajtás alapvetően engedélyezett hisz a megvásárolt jegyek egész napra szólnak. Az elhagyott parkolóhely ürességén azonban senkinek nem tudjuk garantálni.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 9 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer9')">
+              <span class="font-semibold text-xl">Regisztrálhatom a barátomat a versenyeken?</span>
+              <svg [class]="isOpen.answer9 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer9 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer9" class="py-4 text-gray-200">
+                Sajnos nem. Az elmúlt években ebből több probléma is adódott így mindenki csak a saját nevében regisztrálhat a rendezvényen megszervezésre kerülő versenyekre.
+              </p>
+            </div>
+          </div>
+  
+          <!-- Kérdés 10 -->
+          <div class="rounded-xl bg-gray-800 shadow-lg transition hover:shadow-2xl border border-gray-700 overflow-hidden">
+            <button class="w-full flex justify-between items-center px-6 py-5 text-left focus:outline-none"
+              (click)="toggleAnswer('answer10')">
+              <span class="font-semibold text-xl">Mikor kezdődnek a programok?</span>
+              <svg [class]="isOpen.answer10 ? 'rotate-180' : ''"
+                class="w-6 h-6 transition-transform duration-300 transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div [@toggleHeight]="isOpen.answer10 ? 'open' : 'closed'" class="bg-gray-700 px-6 overflow-hidden">
+              <p *ngIf="isOpen.answer10" class="py-4 text-gray-200">
+                A HéCarFest programjai a következő időpontokban zajlanak:
+                Hangnyomásmérés: 11:00-től
+                Felnitartó verseny: 12:00-től
+                Színpadi szépségverseny: 13:00-tól
+                Kvíz: 14:00-tól
+                Autó limbo: 15:00-tól
+                Eredményhirdetés: 17:30-tól
+                Tombolahúzás: 18:00-tól
+                Kérjük, vegye figyelembe, hogy a programok időpontjai csúszhatnak a jelentkezések mennyiségétől függően.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
