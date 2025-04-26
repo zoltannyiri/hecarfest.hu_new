@@ -137,3 +137,5 @@ dist
 
 # Sensitive data file to ignore
 hecarfest-vip-1c7e3c451f3f.json
+
+get-acces-token.js

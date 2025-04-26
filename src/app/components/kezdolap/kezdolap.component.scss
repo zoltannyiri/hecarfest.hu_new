@@ -1,3 +1,16 @@
 // .background{
     
 // }
+#programs,
+#hidden-programs {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* Alapértelmezett egy oszlop */
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  #programs,
+  #hidden-programs {
+    grid-template-columns: repeat(3, 1fr); /* Ha elég széles a képernyő, három oszlop */
+  }
+}
