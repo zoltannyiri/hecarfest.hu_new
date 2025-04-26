@@ -14,3 +14,15 @@
     grid-template-columns: repeat(3, 1fr); /* Ha elég széles a képernyő, három oszlop */
   }
 }
+
+.hatter{
+  background-image: url("/cucc2.jpg");
+  // background-size: cover;
+  // background-position: center;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
+  // height: 100%;
+  z-index: -1; /* A háttér mögé helyezi a többi elemet */
+}

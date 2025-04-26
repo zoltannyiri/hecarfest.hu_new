@@ -1,6 +1,6 @@
-<div class="min-h-screen bg-gray-900 text-white font-sans">
+<div class="min-h-screen text-white font-sans">
   <!-- Hero rész videó háttérrel -->
-  <header class="relative h-screen flex items-center justify-center bg-gray-800 overflow-hidden">
+  <header class="relative h-130 flex items-center justify-center bg-gray-800 overflow-hidden">
     <!-- Videó háttér -->
     <div class="absolute inset-0 bg-black/50 z-0"></div>
     <video autoplay muted loop class="absolute w-full h-full object-cover z-0">
@@ -10,43 +10,69 @@
 
     <!-- Tartalom -->
     <div class="container mx-auto px-6 relative z-10 text-center">
-      <div class="mb-8">
-        <span class="text-yellow-400 text-lg font-semibold tracking-widest">2025. JÚNIUS 6.</span>
-      </div>
+      
 
-      <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
-        <span class="text-yellow-400 font-display">HéCarFest</span>
-        <span class="text-emerald-400 font-display"> Aero</span>
+      <!-- <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+        <span class="text-yellow-600 font-display">HéCarFest</span>
+        <span class="text-purple-600 font-display"> Aero</span>
+      </h1> -->
+
+
+      <h1 class="relative inline-block text-4xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+        <span class="text-amber-500 font-display" style="
+          text-shadow:
+            1px 1px 0 #363636,
+            2px 2px 0 #363636,
+            3px 3px 0 #363636,
+            4px 4px 0 #363636,
+            5px 5px 0 #363636;">HéCarFest</span>
+        <span class="text-orange-600 font-display ml-2" style="
+          text-shadow:
+            1px 1px 0 #363636,
+            2px 2px 0 #363636,
+            3px 3px 0 #363636,
+            4px 4px 0 #363636,
+            5px 5px 0 #363636;">Aero2025</span>
       </h1>
+      
+      
+      
+      
+
+      <div class="mb-8">
+        <span class="text-yellow-400 text-lg font-semibold tracking-widest">2025. JÚNIUS 7.</span>
+      </div>
 
       <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto opacity-90">
         Magyarország egyik legnagyobb autós fesztiválja
       </p>
 
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="/vip-regisztracio"
-          class="bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
+        <a href="/vip-regisztracio" style="text-shadow:
+        1px 1px 0 #363636,
+        1px 1px 0 #363636,
+        1px 1px 0 #363636,
+        2px 2px 0 #363636,
+        2px 2px 0 #363636;"
+          class="bg-orange-600 hover:bg-yellow-300 text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
           V.I.P. regisztráció
         </a>
-        <a href="/programok"
-          class="bg-transparent hover:bg-white/10 border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
+        <a href="/programok" style="text-shadow:
+        1px 1px 0 #363636,
+        1px 1px 0 #363636,
+        1px 1px 0 #363636,
+        2px 2px 0 #363636,
+        2px 2px 0 #363636;"
+          class="bg-orange-600 text-white hover:bg-yellow-300 font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
           Programok
         </a>
       </div>
     </div>
-
-    <!-- Görgés gomb -->
-    <div class="absolute bottom-10 left-0 right-0 text-center animate-bounce">
-      <a href="#tartalom" class="inline-block">
-        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
-      </a>
-    </div>
   </header>
 
   <!-- Fő tartalom -->
-  <main id="tartalom" class="py-20 bg-gradient-to-b from-gray-800 to-gray-900">
+  <main id="tartalom" class="py-10 hatter">
+    <!-- <img src="cucc.jpg" alt=""> -->
     <div class="container mx-auto px-6">
       <!-- Röviden a fesztiválról -->
       <section class="mb-20">
@@ -59,17 +85,50 @@
 
 
         <h2 class="text-3xl md:text-3xl font-bold mb-10 text-center">
-          <span class="text-yellow-400">Várunk mindenkit szeretettel a </span>
-          <span class="text-emerald-400">2025.06.07. (SZOMBAT)</span>
-          <span class="text-yellow-400"> napon megrendezendő HéCarFest-en!</span>
+          <span class="text-orange-600">Várunk mindenkit szeretettel a </span>
+          <span class="text-white">2025.06.07. (SZOMBAT)</span>
+          <span class="text-orange-600"> napon megrendezendő HéCarFest-en!</span>
         </h2>
 
-        <h2 class="text-3xl md:text-3xl font-bold mb-10 text-center">
+        <!-- <h2 class="text-3xl md:text-3xl font-bold mb-10 text-center">
           <span class="text-yellow-400">Kezdés:</span>
-        </h2>
-        <div id="mainCountdown" class="mt-4 text-yellow-400 text-xl font-semibold text-center">
+        </h2> -->
+        <!-- <div id="mainCountdown" class="mt-4 text-yellow-400 text-4xl font-semibold text-center countdown font-mono">
           {{ mainCountdown }}
-        </div>
+        </div> -->
+        
+<!-- <a href="https://logwork.com/countdown-5ciz" class="countdown-timer" data-width="400" data-timezone="Europe/Budapest" data-language="hu" data-textcolor="#ff8c08" data-date="2025-06-07 09:00" data-digitscolor="#ff8c08" data-unitscolor="#ff8c08">Kapunyitásig hátramaradt idő</a>
+
+<script src="https://logwork.com/countdown-5ciz"></script> -->
+
+
+<!-- <a 
+   href="https://logwork.com/countdown-5ciz"
+   class="countdown-timer" 
+   data-width="400" 
+   data-timezone="Europe/Budapest" 
+   data-language="hu" 
+   data-textcolor="#ff8c08" 
+   data-date="2025-06-07 09:00" 
+   data-digitscolor="#ff8c08" 
+   data-unitscolor="#ff8c08">
+   Kapunyitásig hátramaradt idő
+</a> -->
+
+<!-- <script src="https://cdn.logwork.com/widget/countdown.js" defer></script> -->
+
+<div class="flex justify-center">
+  <iframe 
+    src="https://logwork.com/widget/countdown/?text=Kapunyit%C3%A1sig%20h%C3%A1tramaradt%20id%C5%91&amp;timezone=Europe%2FBudapest&amp;width=400&amp;style=&amp;uid=208895&amp;loc=https://logwork.com/countdown-5ciz&amp;language=hu&amp;textcolor=%23ff8c08&amp;background=&amp;date=2025-06-07%2009%3A00&amp;digitscolor=%23ff8c08&amp;unitscolor=%23ff8c08&amp;url=https://www.hecarfest.hu/" 
+    id="countdown_iframe_208895" 
+    scrolling="no" 
+    allowtransparency="true" 
+    frameborder="0" 
+    title="Countdown"
+    class="mt-4"
+    style="width: 400px; height: 100%; border: none; visibility: visible;">
+  </iframe>
+</div>
 
 
 
@@ -106,27 +165,6 @@
 
 
 
-        <!-- <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p class="text-lg mb-6 leading-relaxed">
-              A HéCarFest Aero 2025 Magyarország legizgalmasabb autó- és repülőgép témájú eseménye, ahol a sebesség, a
-              design és a technika szerelmesei találkozhatnak.
-            </p>
-            <p class="text-lg mb-6 leading-relaxed">
-              Két napon át exkluzív autó- és repülőgép bemutatók, tesztvezetések, szakmai előadások és felejthetetlen
-              élmények várnak minden látogatóra.
-            </p>
-            <div class="flex gap-4">
-              <a href="/rolunk" class="text-yellow-400 hover:text-yellow-300 font-semibold flex items-center">
-                További információk
-                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </div>
-          </div>
-          
-        </div> -->
       </section>
 
       <section class="bg-gray-900 py-16 rounded-3xl mb-20">
@@ -143,22 +181,23 @@
               <div id="vipCountdown" class="mt-4 text-yellow-400 text-xl font-semibold text-center">
                 {{ vipCountdown }}
               </div>
+
+
             
               <!-- Gomb középre helyezése -->
               <div class="mt-6 text-center">
-                <a href="/vip-regisztracio"
-                   class="bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
+                <a href="/vip-regisztracio" style="text-shadow:
+                1px 1px 0 #363636,
+                1px 1px 0 #363636,
+                1px 1px 0 #363636,
+                2px 2px 0 #363636,
+                2px 2px 0 #363636;"
+                   class="bg-orange-600 hover:bg-yellow-300 text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
                   VIP Regisztráció
                 </a>
               </div>
             </div>
             
-            
-            
-            
-            
-            
-      
             <!-- Videó (szélesebb, alacsonyabb) -->
             <div class="flex justify-center">
               <div class="w-full max-w-3xl h-[300px] rounded-2xl overflow-hidden shadow-xl">
@@ -178,8 +217,13 @@
             
               <!-- Gomb középre igazítva -->
               <div class="mt-6 text-center">
-                <a href="https://dunakanyar.funcode.hu" target="_blank"
-                   class="bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
+                <a href="https://dunakanyar.funcode.hu" target="_blank" style="text-shadow:
+                1px 1px 0 #363636,
+                1px 1px 0 #363636,
+                1px 1px 0 #363636,
+                2px 2px 0 #363636,
+                2px 2px 0 #363636;"
+                   class="bg-orange-600 hover:bg-yellow-300 text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 hover:scale-105">
                   Jegyvásárlás
                 </a>
               </div>
@@ -199,14 +243,14 @@
       <section class="mb-20">
         <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center">
           <!-- <span class="text-yellow-400">Főbb</span> -->
-          <span class="text-emerald-400">Programjaink</span>
+          <span class="text-white">Programjaink</span>
         </h2>
 
         <!-- Első három program -->
         <div class="grid md:grid-cols-3 gap-8" id="programs">
           <!-- Program 1 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-yellow-400 text-4xl mb-4">11:00-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-amber-500 text-4xl mb-4">11:00-tól</div>
             <h3 class="text-xl font-bold mb-3">Hangnyomásmérés</h3>
             <p class="text-gray-300">
               Ismerd meg a legújabb modelleket és koncepcióautókat közvetlenül a gyártóktól.
@@ -214,8 +258,8 @@
           </div>
 
           <!-- Program 2 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-emerald-400 text-4xl mb-4">12:00-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-orange-600 text-4xl mb-4">12:00-tól</div>
             <h3 class="text-xl font-bold mb-3">Felnitartó verseny</h3>
             <p class="text-gray-300">
               Légibemutatók és statikus kiállítás, ahol közelről megnézheted a repülőgépeket.
@@ -223,8 +267,8 @@
           </div>
 
           <!-- Program 3 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-yellow-400 text-4xl mb-4">13:00-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-amber-500 text-4xl mb-4">13:00-tól</div>
             <h3 class="text-xl font-bold mb-3">Színpadi szépségverseny</h3>
             <p class="text-gray-300">
               Éld át, milyen vezetni álmaid autóját kiemelt pályánkön.
@@ -235,8 +279,8 @@
         <!-- Rejtett programok -->
         <div *ngIf="showAllPrograms" class="grid md:grid-cols-3 gap-8 mt-8" id="hidden-programs">
           <!-- Program 4 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-emerald-400 text-4xl mb-4">14:00-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-orange-600 text-4xl mb-4">14:00-tól</div>
             <h3 class="text-xl font-bold mb-3">Kvíz</h3>
             <p class="text-gray-300">
               Éld át, milyen vezetni álmaid autóját kiemelt pályánkön.
@@ -244,8 +288,8 @@
           </div>
 
           <!-- Program 5 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-yellow-400 text-4xl mb-4">15:00-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-amber-500 text-4xl mb-4">15:00-tól</div>
             <h3 class="text-xl font-bold mb-3">Autó limbó</h3>
             <p class="text-gray-300">
               Éld át, milyen vezetni álmaid autóját kiemelt pályánkön.
@@ -253,8 +297,8 @@
           </div>
 
           <!-- Program 6 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-emerald-400 text-4xl mb-4">17:30-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-orange-600 text-4xl mb-4">17:30-tól</div>
             <h3 class="text-xl font-bold mb-3">Eredményhirdetés</h3>
             <p class="text-gray-300">
               Éld át, milyen vezetni álmaid autóját kiemelt pályánkön.
@@ -262,8 +306,8 @@
           </div>
 
           <!-- Program 7 -->
-          <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
-            <div class="text-yellow-400 text-4xl mb-4">18:00-tól</div>
+          <div class="bg-transparent border-1 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 hover:-translate-y-2">
+            <div class="text-amber-500 text-4xl mb-4">18:00-tól</div>
             <h3 class="text-xl font-bold mb-3">Tombolahúzás</h3>
             <p class="text-gray-300">
               Éld át, milyen vezetni álmaid autóját kiemelt pályánkön.
@@ -282,32 +326,18 @@
       </section>
 
 
-
-
-      <!-- <script>
-        document.getElementById("show-more").addEventListener("click", function() {
-          // Rejtett programok megjelenítése
-          document.getElementById("hidden-programs").style.display = "grid";
-      
-          // A gomb eltüntetése
-          this.style.display = "none";
-        });
-      </script> -->
-
-
-
       <!-- Időpont és helyszín -->
-      <section class="mb-20 bg-gradient-to-r from-gray-800 to-gray-700 rounded-xl p-8 md:p-12">
+      <section class="mb-20 bg-transparent border-1 hover:bg-gray-700 rounded-xl p-8 md:p-12 transition-all hover:-translate-y-2 duration-300 ">
         <div class="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h2 class="text-3xl font-bold mb-6">
-              <span class="text-yellow-400">Időpont </span>
+              <span class="text-amber-500">Időpont </span>
               <span class="text-white">és</span>
-              <span class="text-emerald-400"> helyszín</span>
+              <span class="text-orange-600"> helyszín</span>
             </h2>
             <div class="space-y-6">
               <div class="flex items-start">
-                <div class="text-yellow-400 mr-4 mt-1">
+                <div class="text-amber-500 mr-4 mt-1">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -320,7 +350,7 @@
               </div>
 
               <div class="flex items-start">
-                <div class="text-emerald-400 mr-4 mt-1">
+                <div class="text-orange-600 mr-4 mt-1">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -328,6 +358,7 @@
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                   </svg>
                 </div>
+                
                 <div>
                   <h3 class="font-bold text-lg">Kecskédi Repülőtér</h3>
                   <p class="text-gray-300">2852 Kecskéd, Repülőtér</p>
@@ -354,14 +385,14 @@
       <div class="flex flex-col md:flex-row justify-between items-center">
         <div class="mb-6 md:mb-0">
           <div class="text-2xl font-bold mb-2">
-            <span class="text-yellow-400">HéCarFest</span>
-            <span class="text-emerald-400"> Aero</span>
+            <span class="text-amber-500">HéCarFest</span>
+            <span class="text-orange-600"> Aero</span>
           </div>
           <p class="text-gray-400">© 2025 Minden jog fenntartva</p>
         </div>
 
         <div class="flex space-x-6">
-          <a href="#" class="text-gray-400 hover:text-yellow-400 transition">
+          <a href="https://www.facebook.com/events/468122706049987/?active_tab=discussion" class="text-gray-400 hover:text-yellow-400 transition">
             <span class="sr-only">Facebook</span>
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd"
@@ -369,7 +400,7 @@
                 clip-rule="evenodd"></path>
             </svg>
           </a>
-          <a href="#" class="text-gray-400 hover:text-yellow-400 transition">
+          <a href="https://www.instagram.com/hecarfest.aero/" class="text-gray-400 hover:text-yellow-400 transition">
             <span class="sr-only">Instagram</span>
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd"
@@ -377,14 +408,14 @@
                 clip-rule="evenodd"></path>
             </svg>
           </a>
-          <a href="#" class="text-gray-400 hover:text-yellow-400 transition">
+          <!-- <a href="#" class="text-gray-400 hover:text-yellow-400 transition">
             <span class="sr-only">YouTube</span>
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd"
                 d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z"
                 clip-rule="evenodd"></path>
             </svg>
-          </a>
+          </a> -->
         </div>
       </div>
     </div>

@@ -606,17 +606,17 @@ app.get('/api/admin/registrations/status/:status', authenticateToken, async (req
 
 //admin létrehozása
 // async function createAdmin() {
-//     const username = 'nortako66'; // Állítsd be az admin felhasználónevet
-//     const password = 'PPaauussee1987'; // Állítsd be az admin jelszót
+//     const username = 'Kenel'; // Állítsd be az admin felhasználónevet
+//     const password = '19Killer84boY'; // Állítsd be az admin jelszót
 
-//     // Ellenőrizzük, hogy létezik-e már admin felhasználó
+//     Ellenőrizzük, hogy létezik-e már admin felhasználó
 //     const existingAdmin = await Admin.findOne({ username });
 //     if (existingAdmin) {
 //         console.log('Admin felhasználó már létezik');
 //         return;
 //     }
 
-//     // A jelszó titkosítása
+//     A jelszó titkosítása
 //     const hashedPassword = await bcrypt.hash(password, 10);
 
 //     const newAdmin = new Admin({
@@ -628,7 +628,7 @@ app.get('/api/admin/registrations/status/:status', authenticateToken, async (req
 //     console.log('Admin felhasználó létrehozva!');
 // }
 
-// Hívjuk meg a createAdmin függvényt, ha a scriptet indítjuk
+// // Hívjuk meg a createAdmin függvényt, ha a scriptet indítjuk
 // createAdmin().catch(console.error);
 
 
