@@ -57,7 +57,7 @@ export class VipRegisztracioComponent {
       console.log('interiorImage fájl:', interiorInput.files[0]);
     }
     
-    this.http.post('http://localhost:3000/api/vip-registration', formData)
+    this.http.post('https://hecarfesthu-backend.onrender.com/api/vip-registration', formData)
       .subscribe({
         next: (valasz: any) => {
           this.isLoading = false; // Betöltés befejezése

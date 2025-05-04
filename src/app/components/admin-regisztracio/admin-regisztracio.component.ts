@@ -46,7 +46,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   loadRegistrations(): void {
     this.isLoading = true;
-    this.http.get<any[]>('http://localhost:3000/api/admin/registrations', {
+    this.http.get<any[]>('https://hecarfesthu-backend.onrender.com/api/admin/registrations', {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
       }
@@ -75,7 +75,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   deleteRegistration(id: string): void {
     if (confirm('Biztosan törölni szeretnéd ezt a regisztrációt?')) {
-      this.http.delete(`http://localhost:3000/api/admin/registrations/${id}`, {
+      this.http.delete(`https://hecarfesthu-backend.onrender.com/api/admin/registrations/${id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
         }
@@ -231,7 +231,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
     try {
       reg.notified = !reg.notified;
       
-      await this.http.put(`http://localhost:3000/api/admin/registrations/${reg._id}/notified`, 
+      await this.http.put(`https://hecarfesthu-backend.onrender.com/api/admin/registrations/${reg._id}/notified`, 
         { notified: reg.notified },
         {
           headers: {
@@ -253,7 +253,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this.http.post('http://localhost:3000/api/admin/send-email', this.emailData, {
+      await this.http.post('https://hecarfesthu-backend.onrender.com/api/admin/send-email', this.emailData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
         }
@@ -271,7 +271,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   async loadLogs() {
     try {
-      const logs = await this.http.get<any[]>('http://localhost:3000/api/admin/audit-logs', {
+      const logs = await this.http.get<any[]>('https://hecarfesthu-backend.onrender.com/api/admin/audit-logs', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
         }
@@ -291,7 +291,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
   }
 
   updateStatus(registrationId: string, status: string): void {
-    this.http.put(`http://localhost:3000/api/admin/registrations/${registrationId}/status`, { status }, {
+    this.http.put(`https://hecarfesthu-backend.onrender.com/api/admin/registrations/${registrationId}/status`, { status }, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
       }
@@ -310,7 +310,7 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
 
   filterByStatus(status: string): void {
     this.isLoading = true;
-    this.http.get<any[]>(`http://localhost:3000/api/admin/registrations/status/${status}`, {
+    this.http.get<any[]>(`https://hecarfesthu-backend.onrender.com/api/admin/registrations/status/${status}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
       }

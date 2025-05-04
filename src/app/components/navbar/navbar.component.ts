@@ -34,7 +34,7 @@ export class NavbarComponent {
     const username = (form.elements.namedItem('username') as HTMLInputElement).value;
     const password = (form.elements.namedItem('password') as HTMLInputElement).value;
     
-    this.http.post<any>('http://localhost:3000/api/admin/login', { username, password })
+    this.http.post<any>('https://hecarfesthu-backend.onrender.com/api/admin/login', { username, password })
       .subscribe({
         next: (response) => {
           localStorage.setItem('admin_token', response.token);
