@@ -111,7 +111,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SidebarComponent } from "../sidebar/sidebar.component";
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -157,11 +157,26 @@ export class KezdolapComponent {
   private vipTargetDate: Date = new Date('2025-05-20T23:59:59');
   private vipInterval: any;
 
-  constructor() { }
+  constructor(private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
     this.startVipCountdown();  // VIP countdown
     this.startMainCountdown(); // Fő countdown
+  }
+
+  scrollToPrograms(): void {
+    const element = document.getElementById('programok');
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+      setTimeout(() => {
+        const yOffset = -80; // Opcionális eltolás, ha van fix fejléc
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+      }, 100);
+    }
   }
 
   ngOnDestroy(): void {
