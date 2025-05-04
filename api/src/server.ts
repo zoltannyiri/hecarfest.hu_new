@@ -135,19 +135,17 @@ async function logAction(req: Request, action: string, details: any = {}): Promi
 }
 
 // Javított authenticateToken middleware
-function authenticateToken(req: Request, res: Response, next: NextFunction): void {
+function authenticateToken(req: Request, res: Response, next: NextFunction): Response | void {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     
     if (!token) {
-        res.sendStatus(401);
-        return;
+        return res.sendStatus(401); // Explicit return
     }
     
     jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
         if (err) {
-            res.sendStatus(403);
-            return;
+            return res.sendStatus(403); // Explicit return
         }
         (req as any).user = user;
         next();
@@ -262,13 +260,23 @@ const upload = multer({
 // Route-ok
 
 // Audit logok
-app.get('/api/admin/audit-logs', authenticateToken, async (req: Request, res: Response): Promise<void> => {
+// app.get('/api/admin/audit-logs', authenticateToken, async (req: Request, res: Response): Promise<void> => {
+//     try {
+//         const logs = await AuditLog.find().sort({ timestamp: -1 }).limit(100);
+//         res.json(logs);
+//     } catch (error) {
+//         console.error('Hiba a naplók lekérdezésekor:', error);
+//         res.status(500).json({ message: 'Hiba történt a naplók lekérdezése során' });
+//     }
+// });
+
+app.get('/api/admin/audit-logs', authenticateToken, async (req: Request, res: Response): Promise<Response> => {
     try {
         const logs = await AuditLog.find().sort({ timestamp: -1 }).limit(100);
-        res.json(logs);
+        return res.json(logs); // Explicit return hozzáadva
     } catch (error) {
         console.error('Hiba a naplók lekérdezésekor:', error);
-        res.status(500).json({ message: 'Hiba történt a naplók lekérdezése során' });
+        return res.status(500).json({ message: 'Hiba történt a naplók lekérdezése során' }); // Explicit return
     }
 });
 
@@ -459,7 +467,7 @@ app.post('/api/vip-registration',
         { name: 'carImage4', maxCount: 1 },
         { name: 'interiorImage', maxCount: 1 }
     ]),
-    async (req: Request, res: Response): Promise<void> => {
+    async (req: Request, res: Response): Promise<Response> => {
         try {
             const {
                 firstname,
@@ -477,7 +485,6 @@ app.post('/api/vip-registration',
                     success: false,
                     message: 'Minden kötelező mezőt ki kell tölteni!'
                 });
-                return;
             }
 
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -540,13 +547,13 @@ app.post('/api/vip-registration',
                 console.error('Hiba email küldéskor:', emailError);
             }
 
-            res.status(201).json({
+            return res.status(201).json({
                 success: true,
                 message: 'Sikeres regisztráció! Hamarosan értesítünk e-mailben.'
             });
         } catch (error) {
             console.error('Regisztrációs hiba:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Hiba történt a regisztráció során',
                 error: (error as Error).message
