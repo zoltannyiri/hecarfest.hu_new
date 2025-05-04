@@ -481,7 +481,7 @@ app.post('/api/admin/login', async (req: Request, res: Response) => {
 
 
   app.use(cors({
-    origin: ['http://localhost:4200', 'https://www.hecarfest.eu'], // vagy az Angular alkalmazásod URL-je
+    origin: ['http://localhost:4200', 'https://www.hecarfest.eu', 'http://wwww.hecarfest.eu', 'hecarfest.eu'], // vagy az Angular alkalmazásod URL-je
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
