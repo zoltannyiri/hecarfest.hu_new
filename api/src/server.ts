@@ -17,7 +17,8 @@ dotenv.config({
 });
 
 const app: Application = express();
-const PORT: number = 3000;
+// const PORT: number = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -509,18 +510,24 @@ app.use(cors({
 
 
 // Middleware a JWT token ellenőrzéséhez
-function authenticateToken(req: Request, res: Response, next: NextFunction) {
+function authenticateToken(req: Request, res: Response, next: NextFunction): void {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     
-    if (!token) return res.sendStatus(401);
+    if (!token) {
+        res.sendStatus(401);
+        return;
+    }
     
     jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
-      if (err) return res.sendStatus(403);
-      (req as any).user = user;
-      next();
+        if (err) {
+            res.sendStatus(403);
+            return;
+        }
+        (req as any).user = user;
+        next();
     });
-  }
+}
 
   function requireAdmin(req: { session: { user: { isAdmin: any; }; }; }, res: { redirect: (arg0: string) => void; }, next: () => void) {
     if (req.session && req.session.user && req.session.user.isAdmin) {
