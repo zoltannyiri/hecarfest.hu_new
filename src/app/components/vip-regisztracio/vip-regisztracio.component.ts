@@ -84,12 +84,21 @@ export class VipRegisztracioComponent {
           }
         },
         error: (hiba) => {
-          this.isLoading = false; // Betöltés befejezése hibánál is
+          this.isLoading = false;
           this.cdRef.detectChanges();
           
-          console.error('Regisztrációs hiba:', hiba);
-          const hibaUzenet = hiba.error?.message || 
-                            'Hiba történt a regisztráció során. Kérjük, próbálja újra később.';
+          console.error('Teljes hibaobjektum:', hiba);
+          let hibaUzenet = 'Ismeretlen hiba történt';
+          
+          if (hiba.error?.error) {
+            // Ha a szerver küldött specifikus hibaüzenetet
+            hibaUzenet = hiba.error.error;
+          } else if (hiba.status === 500) {
+            hibaUzenet = 'Szerverhiba történt. Kérjük, próbáld újra később.';
+          } else if (hiba.status === 413) {
+            hibaUzenet = 'A feltöltött fájl túl nagy (max. 15MB).';
+          }
+          
           alert(hibaUzenet);
         },
         complete: () => {
