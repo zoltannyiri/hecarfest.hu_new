@@ -6,34 +6,42 @@
 //     width: 4rem;
 // }
 
-/* Animáció a mobil menü megjelenítéséhez */
-.md\:hidden {
-    transition: all 0.3s ease;
+/* Alap stílusok */
+.container {
+    max-width: 1200px;
   }
   
-  .meretezett {
-    height: 50px; /* vagy más méret ami megfelelő */
+  /* Logo méretezés */
+  img {
+    max-height: 100%;
     width: auto;
   }
   
-  /* Mobil menü stílusai */
-  @media (max-width: 767px) {
-    .kislogo {
-      z-index: 60; /* Biztosítja, hogy a logó a mobil menü felett legyen */
-    }
-    
-    .absolute.top-full {
-      animation: slideDown 0.3s ease-out;
-    }
+  /* Mobil menü animáció */
+  .md\:hidden {
+    transition: all 0.3s ease;
   }
   
   @keyframes slideDown {
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-10px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+  
+  /* Reszponzív beállítások */
+  @media (max-width: 767px) {
+    .absolute.top-full {
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    /* Kisebb padding mobilnézetben */
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
   }
