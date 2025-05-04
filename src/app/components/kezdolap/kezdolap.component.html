@@ -3,7 +3,8 @@
   <header class="relative h-130 flex items-center justify-center bg-gray-800 overflow-hidden">
     <!-- Videó háttér -->
     <div class="absolute inset-0 bg-black/50 z-0"></div>
-    <video autoplay muted loop class="absolute w-full h-full object-cover z-0">
+    <video #videoPlayer autoplay muted loop playsinline preload="auto"
+     disablePictureInPicture class="absolute w-full h-full object-cover z-0">
       <source src="hecarfest_video.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
