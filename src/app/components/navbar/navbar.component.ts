@@ -13,11 +13,18 @@ export class NavbarComponent {
   showLoginModal = false;
   isLoggingIn = false;
   loginError = '';
+  showMobileMenu = false; // Új változó a mobil menü állapotának tárolására
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  // Mobil menü megnyitása/bezárása
+  toggleMobileMenu(): void {
+    this.showMobileMenu = !this.showMobileMenu;
+  }
+
   openLoginModal(): void {
     this.showLoginModal = true;
+    this.showMobileMenu = false; // Mobil menü bezárása ha bejelentkezési modal nyílik
   }
 
   closeLoginModal(): void {
@@ -41,7 +48,7 @@ export class NavbarComponent {
           this.isLoggingIn = false;
           this.showLoginModal = false;
           this.router.navigate(['/admin/registrations'])
-            .then(() => window.location.reload()); // Frissítés az oldal betöltéséhez
+            .then(() => window.location.reload());
         },
         error: (err) => {
           this.isLoggingIn = false;

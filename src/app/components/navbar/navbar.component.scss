@@ -5,3 +5,35 @@
 // .meretezett{
 //     width: 4rem;
 // }
+
+/* Animáció a mobil menü megjelenítéséhez */
+.md\:hidden {
+    transition: all 0.3s ease;
+  }
+  
+  .meretezett {
+    height: 50px; /* vagy más méret ami megfelelő */
+    width: auto;
+  }
+  
+  /* Mobil menü stílusai */
+  @media (max-width: 767px) {
+    .kislogo {
+      z-index: 60; /* Biztosítja, hogy a logó a mobil menü felett legyen */
+    }
+    
+    .absolute.top-full {
+      animation: slideDown 0.3s ease-out;
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
