@@ -19,9 +19,33 @@ dotenv.config({
 const app: Application = express();
 const PORT: number = 3000;
 
+
+const allowedOrigins = [
+    'http://localhost:4200',
+    'https://www.hecarfest.eu',
+    'http://www.hecarfest.eu',
+    'https://hecarfest.eu',
+    'hecarfest.eu'];
+
+  app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+
+
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+
 
 
 //ADMIN LOGOLÁS
@@ -478,26 +502,6 @@ app.post('/api/admin/login', async (req: Request, res: Response) => {
       res.status(500).json({ success: false, message: 'Szerverhiba történt' });
     }
   });
-
-  const allowedOrigins = [
-    'http://localhost:4200',
-    'https://www.hecarfest.eu',
-    'http://www.hecarfest.eu',
-    'https://hecarfest.eu',
-    'hecarfest.eu'];
-
-  app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
 
 
 // Middleware a JWT token ellenőrzéséhez
