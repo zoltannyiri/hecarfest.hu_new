@@ -49,12 +49,12 @@ export class VipRegisztracioComponent {
     for (let i = 1; i <= 4; i++) {
       const input = form.querySelector(`input[name="carImage${i}"]`) as HTMLInputElement;
       if (input?.files?.length) {
-        console.log(`carImage${i} fájl:`, input.files[0]);
+        // console.log(`carImage${i} fájl:`, input.files[0]);
       }
     }
     const interiorInput = form.querySelector('input[name="interiorImage"]') as HTMLInputElement;
     if (interiorInput?.files?.length) {
-      console.log('interiorImage fájl:', interiorInput.files[0]);
+      // console.log('interiorImage fájl:', interiorInput.files[0]);
     }
     
     this.http.post('https://hecarfesthu-backend.onrender.com/api/vip-registration', formData)
