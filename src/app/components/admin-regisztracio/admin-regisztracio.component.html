@@ -104,11 +104,11 @@
                                 </button>
                                 <button (click)="deleteRegistration(reg._id)" class="text-red-400 hover:text-red-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                        </path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                      </path>
                                     </svg>
-                                </button>
+                                  </button>
                             </td>
                         </tr>
                     </tbody>
@@ -119,6 +119,56 @@
             </div>
         </div>
     </div>
+
+    <!-- Törlés megerősítő modal -->
+    <div *ngIf="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 rounded-xl shadow-2xl p-8 max-w-md w-full">
+          <div class="text-center">
+            <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <h3 class="text-lg font-medium text-white mt-4">Biztos benne?</h3>
+            <div class="mt-2" *ngIf="!confirmingFinalDelete">
+              <p class="text-sm text-gray-300">
+                Valóban törölni szeretné <strong>{{registrationToDelete?.lastName}} {{registrationToDelete?.firstName}}</strong> regisztrációját?
+              </p>
+              <p class="text-sm text-gray-300 mt-2">
+                Autó: <strong>{{registrationToDelete?.carType}}</strong><br>
+                Rendszám: <strong>{{registrationToDelete?.licensePlate}}</strong>
+              </p>
+              <p class="text-red-400 text-sm mt-4">
+                A művelet nem vonható vissza!
+              </p>
+            </div>
+      
+            <!-- Második megerősítő ablak -->
+            <div class="mt-2" *ngIf="confirmingFinalDelete">
+              <h3 class="text-2xl font-bold text-red-500 uppercase mb-4">BIZTOS HOGY TÖRLÖD???</h3>
+              <p class="text-xl text-gray-300">
+                EZT A JÓISTEN SEM FOGJA VISSZAÁLLÍTANI
+              </p>
+            </div>
+          </div>
+      
+          <div class="mt-6 flex justify-center space-x-4">
+            <button *ngIf="!confirmingFinalDelete" (click)="cancelDelete()" type="button" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg text-white transition">
+              Mégse
+            </button>
+            <button *ngIf="!confirmingFinalDelete" (click)="confirmingFinalDelete = true" type="button" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white transition">
+              Törlés
+            </button>
+      
+            <!-- Végső döntés gombok -->
+            <button *ngIf="confirmingFinalDelete" (click)="cancelDelete()" type="button" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg text-white transition">
+              Nem
+            </button>
+            <button *ngIf="confirmingFinalDelete" (click)="confirmDelete()" type="button" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white transition">
+              Igen, törlöm
+            </button>
+          </div>
+        </div>
+      </div>
+      
 
     <!-- Státusz szerinti regisztrációk modal -->
     <div *ngIf="statusModalOpen" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">

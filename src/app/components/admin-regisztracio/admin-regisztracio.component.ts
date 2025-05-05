@@ -16,6 +16,10 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
   selectedRegistration: any = null;
   isLoading = false;
   private refreshInterval: any;
+  showDeleteModal = false;
+  registrationToDelete: any = null;
+  confirmingFinalDelete = false; // első kör
+
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -74,23 +78,44 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
   }
 
   deleteRegistration(id: string): void {
-    if (confirm('Biztosan törölni szeretnéd ezt a regisztrációt?')) {
-      this.http.delete(`https://hecarfesthu-backend.onrender.com/api/admin/registrations/${id}`, {
+    this.registrationToDelete = this.registrations.find(r => r._id === id);
+    this.showDeleteModal = true;
+    this.confirmingFinalDelete = false; // első kör
+  }
+  confirmDelete(): void {
+    if (this.registrationToDelete && this.confirmingFinalDelete) {
+      // tényleges törlés
+      this.http.delete(`https://hecarfesthu-backend.onrender.com/api/admin/registrations/${this.registrationToDelete._id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
         }
       }).subscribe({
         next: () => {
-          this.registrations = this.registrations.filter(r => r._id !== id);
+          this.registrations = this.registrations.filter(r => r._id !== this.registrationToDelete._id);
+          this.resetDeleteModal();
         },
         error: (err: { status: number; }) => {
           console.error('Hiba a törlés során:', err);
           if (err.status === 401) {
             this.logout();
           }
+          this.resetDeleteModal();
         }
       });
+    } else {
+      // ha első törlés gombra kattintott, mutatjuk a második megerősítést
+      this.confirmingFinalDelete = true;
     }
+  }
+  
+  cancelDelete(): void {
+    this.resetDeleteModal();
+  }
+  
+  private resetDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.registrationToDelete = null;
+    this.confirmingFinalDelete = false;
   }
 
   openImageInNewTab(imageUrl: string): void {
