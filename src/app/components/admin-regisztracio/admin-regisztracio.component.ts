@@ -252,6 +252,90 @@ export class AdminRegistrationsComponent implements OnInit, OnDestroy {
       .catch(err => console.error('Hiba a másolás során:', err));
   }
 
+  rejectedSzoveg(): string {
+    return `
+      <p>Szia!</p>
+  
+      <p>
+        Ezúton is szeretnénk megköszönni, hogy jelentkeztél a <strong>2025-ös HéCarFest</strong> rendezvényünkre, és hogy érdeklődést mutattál a <strong>V.I.P. szekcióban</strong> való részvétel iránt.
+      </p>
+  
+      <p>
+        Sajnálattal kell közölnünk, hogy a V.I.P. regisztrációd ez alkalommal <strong>nem került elfogadásra</strong>. Az idei évben rendkívül magas számban érkeztek be jelentkezések, a rendelkezésre álló helyek száma pedig korlátozott.
+      </p>
+  
+      <p>
+        A kiválasztási folyamat során több szempontot is figyelembe kellett vennünk, többek között az autók egyediségét és különlegességét is.
+      </p>
+  
+      <p>
+        Bár járműved nem került be a V.I.P. kategóriába, <strong>nagyra értékeljük</strong> az autó iránti elköteleződésed és a közösség iránt tanúsított érdeklődésed. Reméljük, hogy ettől függetlenül <strong>ellátogatsz az eseményre</strong>, és együtt élvezhetjük a fesztivál hangulatát!
+      </p>
+  
+      <p>
+        Köszönjük megértésed, és bízunk benne, hogy a jövőben ismét találkozunk! 🙂
+      </p>
+  
+      <p>Üdvözlettel,<br><strong>A HéCarFest Csapata</strong></p>
+    `;
+  }
+  
+  setRejectedEmailText(): void {
+    this.emailData.message = this.rejectedSzoveg();
+    this.emailData.subject = 'HéCarFest VIP regisztráció elutasítása';
+  }
+
+
+  acceptedSzoveg(): string {
+    return `
+      <p>Szia!</p>
+  
+      <p>Örömmel értesítünk, hogy beválogatásra kerültél a <strong>2025-ös HéCarFest Aero V.I.P szektorba</strong>!</p>
+  
+      <p>Idén is saját parkolóhely vár a külön elkerített, színpad előtti részen!</p>
+  
+      <p><strong>Amit a V.I.P jegy tartalmaz:</strong></p>
+      <ul>
+        <li>➡️ Helyfoglalás a V.I.P szektorban ❗</li>
+        <li>➡️ Ajándékcsomag ❗</li>
+        <li>➡️ Idén külön fotós vár a VIP szektorban, aki legalább egy garantált profi fotót készít a verdáról ❗ <strong>(Akár több kép is készülhet.)</strong></li>
+        <li>➡️ A képek felkerülnek a LED-falra, amelyet minden évben kiállítunk rendezvényeinken ❗</li>
+      </ul>
+  
+      <p><strong>Ára: 8000 Ft</strong>, amelyet a <strong>Dunakanyar Mercisei Egyesület</strong> számlájára <strong>előre utalással</strong> kell megfizetni!</p>
+  
+      <p><u>(Ezt sajnos a rengeteg utolsó pillanatban történő lemondás miatt kellett bevezetnünk.)</u></p>
+  
+      <p>A foglalást csak az utalás beérkezése <strong>után tudjuk véglegesíteni!</strong></p>
+  
+       <p>
+      <span style="background-color:rgb(40, 163, 69); padding: 2px 4px;">
+        <strong>OTP számlaszám:</strong> 11740054-24062402
+      </span><br>
+      <span style="background-color: rgb(40, 163, 69); padding: 2px 4px;">
+        <strong>Dunakanyar Mercisei Egyesület</strong>
+      </span>
+    </p>
+  
+      <p><strong>Közlemény rovatba</strong> kérjük, írd be a saját neved és az autó rendszámát!</p>
+  
+      <p>
+      <span style="background-color: rgb(221, 158, 76); padding: 2px 4px;">
+        <strong><u>A regisztráció kizárólag arra a személyre és gépjárműre vonatkozik, amely a regisztráláskor beküldésre került!
+        Az azt követő beválogatás során a V.I.P PASS nem ruházható át más emberre és másik autóra!</u></strong>
+      </span>
+      </p>
+  
+      <p>Üdv, <strong>a HéCarFest</strong> csapata</p>
+    `;
+  }
+  
+  
+  setAcceptedEmailText(): void {
+    this.emailData.message = this.acceptedSzoveg();
+    this.emailData.subject = 'HéCarFest VIP regisztráció véglegesítése';
+  }
+
   async toggleNotification(reg: any) {
     try {
       reg.notified = !reg.notified;
