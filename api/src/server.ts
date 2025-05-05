@@ -293,7 +293,7 @@ async function uploadToDrive(file: Express.Multer.File): Promise<string> {
         });
 
         // Egységes URL formátum, méret paraméterrel, de authuser nélkül
-        return `https://lh3.googleusercontent.com/d/${response.data.id}=s400`;
+        return `https://lh3.googleusercontent.com/d/${response.data.id}=s900`;
         
     } catch (error) {
         console.error('HIBA a Drive feltöltésnél:', error);
