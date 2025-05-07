@@ -14,8 +14,16 @@ export class NavbarComponent {
   isLoggingIn = false;
   loginError = '';
   showMobileMenu = false; // Új változó a mobil menü állapotának tárolására
+  isAdminLoggedIn = false; // Új változó a bejelentkezett állapot tárolására
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.checkAdminStatus();
+  }
+
+  // Admin státusz ellenőrzése
+  checkAdminStatus(): void {
+    this.isAdminLoggedIn = !!localStorage.getItem('admin_token');
+  }
 
   // Mobil menü megnyitása/bezárása
   toggleMobileMenu(): void {
@@ -47,6 +55,7 @@ export class NavbarComponent {
           localStorage.setItem('admin_token', response.token);
           this.isLoggingIn = false;
           this.showLoginModal = false;
+          this.isAdminLoggedIn = true; // Beállítjuk, hogy be van jelentkezve
           this.router.navigate(['/admin/registrations'])
             .then(() => window.location.reload());
         },
@@ -55,5 +64,10 @@ export class NavbarComponent {
           this.loginError = err.error?.message || 'Hibás felhasználónév vagy jelszó';
         }
       });
+  }
+  logout(): void {
+    localStorage.removeItem('admin_token');
+    this.isAdminLoggedIn = false; // Frissítjük az állapotot
+    this.router.navigate(['/kezdolap']); // Átirányítjuk a kezdőlapra
   }
 }

@@ -5,13 +5,14 @@ import { VipRegisztracioComponent } from './components/vip-regisztracio/vip-regi
 import { AdminRegistrationsComponent } from './components/admin-regisztracio/admin-regisztracio.component';
 import { AuthGuard } from './guards/auth.guard';
 import { GyikComponent } from './components/gyik/gyik.component';
+import { KvizComponent } from './components/kviz/kviz.component';
 
 export const routes: Routes = [
     {'path': 'kezdolap', component: KezdolapComponent},
     {'path': 'teszt', component: TesztComponent},
     {'path': 'vip-regisztracio', component: VipRegisztracioComponent},
     {'path': 'gyik', component: GyikComponent},
-    
+    {'path': 'admin/kviz', component: KvizComponent},
     {'path': 'admin/registrations', component: AdminRegistrationsComponent},
     {'path': '**', component: KezdolapComponent}
 ];

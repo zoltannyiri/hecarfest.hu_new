@@ -1,0 +1,101 @@
+<div class="">
+    <video #videoPlayer autoplay muted loop preload="auto" playsinline
+    class="absolute w-full h-full object-cover z-0 pointer-events-none opacity-30">
+    <source src="/hecarfest_logo.mp4" type="video/mp4">
+</video>
+
+    <div class="container mx-auto px-6 py-20 z-10">
+        <!-- Dropdown gomb -->
+        <button (click)="toggleQuizDropdown()"
+            class="cursor-pointer relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-bold text-orange-400 transition 
+    duration-300 ease-out border-2 border-orange-500 rounded-full shadow-md group hover:shadow-[0_0_25px_#ffa500] hover:bg-orange-500 hover:text-black">
+            <span
+                class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#ff8c00] via-[#ffa500] to-[#ff8c00] opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out rounded-full blur-sm"></span>
+            <span class="relative z-10 flex items-center">
+                Kvíz Menü
+                <svg class="w-3.5 h-3.5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </span>
+        </button>
+
+
+
+
+
+
+
+        <!-- Dropdown menü -->
+        <div *ngIf="quizDropdownOpen"
+            class="mt-4 z-20 w-52 rounded-xl bg-[#1a1a1a] shadow-[0_0_20px_rgba(255,165,0,0.3)] border border-orange-500 ring-1 ring-orange-400 ring-opacity-99">
+            <ul class="py-2 text-base text-orange-300 font-medium">
+                <li *ngFor="let quiz of quizQuestions">
+                    <a href="#" (click)="openQuizModal(quiz.id); $event.preventDefault()"
+                        class="block px-5 py-3 hover:bg-orange-500 hover:text-black transition duration-200 rounded-md mx-2 opacity-99">
+                        {{quiz.id}}. Kvíz
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+
+
+
+
+
+
+
+        <!-- Kvíz Modal -->
+        <div *ngIf="showQuizModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 p-4 overflow-auto">
+            <h1 class="text-center text-orange-500 mb-6 text-2xl font-bold break-words">
+                HéCarFest Kvíz! {{currentQuiz}}.
+            </h1>
+            <div class="w-full min-h-screen flex justify-center items-start pt-0">
+
+
+                <div
+                    class="w-[90%] max-w-[1500px] bg-[#222] p-10 rounded-2xl shadow-[0_0_40px_#ffa500] text-center relative">
+
+
+                    <button (click)="closeQuizModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+
+
+
+                    <div id="quizContent" class="transition-all duration-300"></div>
+
+                    <div class="flex justify-center mb-6">
+                        <div id="timer" class="text-[32px] mb-5 transition-colors duration-1000"></div>
+                    </div>
+
+                    <div id="feedback" class="mt-5 text-[26px] text-[#ff4500]"></div>
+
+                    <div class="flex flex-col md:flex-row justify-center gap-4 mt-8">
+                        <button id="startTimerBtn" (click)="startTimer()"
+                            class="mt-8 px-10 py-4 text-xl bg-[#ffa500] text-[#111] rounded-xl cursor-pointer hidden">
+                            ⏱️ Időzítő
+                        </button>
+                        <button id="nextBtn" (click)="nextQuestion()"
+                            class="mt-8 px-10 py-4 text-xl bg-[#ffa500] text-[#111] rounded-xl cursor-pointer hidden">
+                            Következő ➡️
+                        </button>
+                        <button id="restart" (click)="restartQuiz()"
+                            class="mt-8 px-10 py-4 text-xl bg-[#ffa500] text-[#111] rounded-xl cursor-pointer hidden">
+                            Újrakezdés 🔄
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

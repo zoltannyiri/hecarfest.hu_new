@@ -1,0 +1,125 @@
+/* Animációk */
+// .hatter {
+//     background-color: rgba(17, 17, 17, 0.3);
+//     opacity: 30%;
+//     // pointer-events: none;
+// }
+body {
+    background-color: #111;
+}
+
+
+h1 {
+    text-align: center;
+    color: #ff7f00;
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.question{
+    color: #ffa500;
+}
+
+.quiz-container {
+    max-width: 1200px;
+    margin: auto;
+    background-color: #222;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 40px #ffa500;
+    text-align: center;
+    color: #ffa500;
+}
+
+#quizContent {
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+#timer {
+    font-size: 32px;
+    margin-bottom: 20px;
+    transition: color 1s ease;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 26px;
+    color: #ff4500;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s forwards;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Kvíz gombok stílusa */
+/* Kvíz gombok stílusa */
+.option-btn {
+    background-color: #333;
+    color: #ffa500;
+    border: 3px solid transparent;
+    border-radius: 15px;
+    padding: 15px 30px;
+    margin: 12px 0;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .option-btn:hover {
+    background-color: #8b8888;
+    border-color: #ffa500;
+    color: #fff;
+  }
+  
+  .option-btn.selected {
+    background-color: #ffa500;
+    color: #111;
+    font-weight: bold;
+    border-color: #fff;
+    transform: scale(1.03);
+    box-shadow: 0 0 15px #ffa500;
+}
+  
+  .option-btn.correct {
+    background-color: #00aa00 !important;
+    color: #fff !important;
+  }
+  
+  .option-btn.wrong {
+    background-color: #cc0000 !important;
+    color: #fff !important;
+  }
+  
+
+/* Gomb hover effektus */
+#startTimerBtn, #nextBtn, #restart {
+    margin-top: 30px;
+    padding: 15px 40px;
+    font-size: 24px;
+    background-color: #ffa500;
+    color: #111;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    display: none;
+    
+    &:hover {
+        background-color: #ff7f00;
+    }
+}

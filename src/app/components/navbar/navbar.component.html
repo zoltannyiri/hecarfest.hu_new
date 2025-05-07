@@ -12,6 +12,7 @@
       <a class="hover:text-yellow-600 transition" [routerLink]="['/kezdolap']">Kezdőlap</a>
       <a class="hover:text-yellow-600 transition" [routerLink]="['/vip-regisztracio']">VIP-regisztráció</a>
       <a class="hover:text-yellow-600 transition" [routerLink]="['/gyik']">GYIK</a>
+      <a *ngIf="isAdminLoggedIn" class="hover:text-yellow-600 transition" [routerLink]="['/admin/kviz']">Kvíz</a>
     </div>
 
     <!-- Jobb oldali belépés gomb + hamburger -->
@@ -37,6 +38,7 @@
         <a class="hover:text-yellow-600 transition py-2" [routerLink]="['/kezdolap']" (click)="toggleMobileMenu()">Kezdőlap</a>
         <a class="hover:text-yellow-600 transition py-2" [routerLink]="['/vip-regisztracio']" (click)="toggleMobileMenu()">VIP-regisztráció</a>
         <a class="hover:text-yellow-600 transition py-2" [routerLink]="['/gyik']" (click)="toggleMobileMenu()">GYIK</a>
+        <a *ngIf="isAdminLoggedIn" class="hover:text-yellow-600 transition" [routerLink]="['/admin/kviz']">Kvíz</a>
       </div>
     </div>
   </div>
