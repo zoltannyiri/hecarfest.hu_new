@@ -225,7 +225,13 @@ export class KvizComponent {
             answer: 1
           },
           {
-            question: "<img src='https://1000logos.net/wp-content/uploads/2020/04/Koenigsegg-Logo.jpg' alt='Koenigsegg Logo' style='max-height:150px;'><br>Melyik autómárka logója látható a képen?",
+            question: `
+            <div style="text-align:center;">
+            <br>
+            Melyik autómárka logója látható a képen?
+            <br>
+            <img src='https://1000logos.net/wp-content/uploads/2020/04/Koenigsegg-Logo.jpg' alt='Koenigsegg Logo' 
+            style="max-height:150px; display: block; margin: 0 auto;"><br>`,
             options: ["Koenigsegg", "Pagani", "Bugatti", "Lamborghini"],
             answer: 0
           },
@@ -260,7 +266,14 @@ export class KvizComponent {
             answer: 1
           },
           {
-            question: "<img src='https://www.battery.co.za/wp-content/uploads/2024/06/SAAB.png' alt='Audi Logo' style='max-height:150px;'><br>Melyik autómárka logója látható a képen?",
+            question: `
+            <div style="text-align:center;">
+            <br>
+            Melyik autómárka logója látható a képen?
+            <br>
+            <img src='https://www.battery.co.za/wp-content/uploads/2024/06/SAAB.png' alt='Audi Logo' 
+            style="max-height:150px; display: block; margin: 0 auto;">
+            </div>`,
             options: ["SAAB", "Vauxhall", "MG", "Subaru"],
             answer: 0
           },
@@ -280,7 +293,14 @@ export class KvizComponent {
             answer: 3
           },
           {
-            question: "<img src='https://upload.wikimedia.org/wikipedia/sco/1/18/Vauxhall_logo_2019.svg' alt='Audi Logo' style='max-height:150px;'><br>Melyik autómárka logója látható a képen?",
+            question: `
+              <div style="text-align:center;">
+                <br>
+                Melyik autómárka logója látható a képen?
+                <br>
+                <img src="https://upload.wikimedia.org/wikipedia/sco/1/18/Vauxhall_logo_2019.svg" alt="Vauxhall Logo" style="max-height:150px; display: block; margin: 0 auto;">
+              </div>
+            `,
             options: ["Opel", "Vauxhall", "Dacia", "Lotus"],
             answer: 1
           },
@@ -315,9 +335,13 @@ export class KvizComponent {
             answer: 2
           },
           {
-            question: "<img src='https://preview.redd.it/fzijohhjyy291.png?width=339&format=png&auto=webp&s=31617f94856bde699929d12f03127fdc0251085d' class='logo-img'><br>Melyik autómárka logója ez?",
+            question:  `<div style="text-align:center;"><img src='https://preview.redd.it/fzijohhjyy291.png?width=339&format=png&auto=webp&s=31617f94856bde699929d12f03127fdc0251085d' 
+            class='logo-img' style="max-height:150px; display: block; margin: 0 auto;"><br>Melyik autómárka logója ez?",
+            </div>
+            `,
             options: ["Lamborghini", "Ferrari", "Koenig", "Suzuki"],
-            answer: 0
+            answer: 0 
+            ,
           },
           {
             question: "Melyik autómárka neve jelentése magyarul: „nép autója”?",
