@@ -10,7 +10,7 @@ import { KvizComponent } from './components/kviz/kviz.component';
 export const routes: Routes = [
     {'path': 'kezdolap', component: KezdolapComponent},
     {'path': 'teszt', component: TesztComponent},
-    {'path': 'vip-regisztracio', component: VipRegisztracioComponent},
+    // {'path': 'vip-regisztracio', component: VipRegisztracioComponent},
     {'path': 'gyik', component: GyikComponent},
     {'path': 'admin/kviz', component: KvizComponent},
     {'path': 'admin/registrations', component: AdminRegistrationsComponent},
