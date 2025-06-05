@@ -13,12 +13,10 @@ import { FormsModule } from '@angular/forms';
   encapsulation: ViewEncapsulation.None
 })
 export class KvizComponent {
-  // ... (egyéb változók)
   showQuizModal = false;
   quizDropdownOpen = false;
   currentQuiz = 1;
 
-  // Kvíz változók
   quizQuestions: any[] = [];
   currentQuestion = 0;
   selectedOption: number | null = null;
@@ -72,9 +70,9 @@ export class KvizComponent {
             answer: 1
           },
           {
-            question: "Mi a neve az Audi önvezető technológiájának?",
-            options: ["Pilot Assist", "Autopilot", "Drive Pilot", "IntelliDrive"],
-            answer: 2
+            question: "Hányadik alkalommal rendezzük a Kecskédi Reptéren a HéCarFestet?",
+            options: ["Első alkalommal", "Második alkalommal", "Harmadik alkalommal", "Mindig itt került megrendezésre"],
+            answer: 1
           },
           {
             question: "Melyik autógyártó alkotta meg a híres \"Countach\" szupersportautót?",
